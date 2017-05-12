@@ -1,27 +1,29 @@
-let apiTestActions ={
+import apiTestUtils from '../apiTestUtils'
 
-    post: function(auth){
+let apiTestActions = {
+
+    doPost: function (service, userInfo) {
         return {
             type: 'POST',
-            auth
+            payload: apiTestUtils.doPost(service, userInfo)
         }
     },
-    get: function(auth){
+    doGet: function (service, userInfo) {
         return {
             type: 'get',
-            auth
+            payload: apiTestUtils.doGet(service, userInfo)
         }
     },
-    put: function(auth){
+    doPut: function (service, userInfo) {
         return {
             type: 'put',
-            auth
+            payload: apiTestUtils.doPut(service, userInfo)
         }
     },
-    delete: function(auth){
+    doDelete: function (service, userInfo) {
         return {
             type: 'delete',
-            auth
+            payload: apiTestUtils.doDelete(service, userInfo)
         }
     }
 }

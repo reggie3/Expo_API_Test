@@ -42,12 +42,6 @@ export default function authentication(authentication = {}, action) {
                 }
             });
 
-        case 'SIGN_OUT_USER':
-            return Object.assign({}, authentication, {
-                signedIn: false,
-                credentials: {}
-            });
-
         case 'GET_AUTH0_USER_INFO':
             return authentication;
         case 'GET_AUTH0_USER_INFO_PENDING':
@@ -129,8 +123,10 @@ export default function authentication(authentication = {}, action) {
                 return authentication;
 
         case 'SIGN_OUT_USER':
+        debugger;
             return {
                 signedIn: false,
+                type: "",
                 credentials: {},
                 userInfo: {
                     profilePicture: undefined

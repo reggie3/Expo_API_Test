@@ -24,18 +24,30 @@ class ApiTestingComponent extends Component {
   }
 
   post() {
-    this.props.dispatch(actions.apiTestActions.post());
+    this.props.dispatch(actions.apiTestActions.doPost(
+      this.props.authentication.type,
+      this.props.authentication.userInfo
+    ));
   }
   get() {
-    this.props.dispatch(actions.apiTestActions.get());
+    this.props.dispatch(actions.apiTestActions.doGet(
+      this.props.authentication.type,
+      this.props.authentication.userInfo
+    ));
 
   }
   put() {
-    this.props.dispatch(actions.apiTestActions.put());
+    this.props.dispatch(actions.apiTestActions.doPut(
+      this.props.authentication.type,
+      this.props.authentication.userInfo
+    ));
 
   }
   delete() {
-    this.props.dispatch(actions.apiTestActions.delete());
+    this.props.dispatch(actions.apiTestActions.doDelete(
+      this.props.authentication.type,
+      this.props.authentication.userInfo
+    ));
 
   }
   render() {

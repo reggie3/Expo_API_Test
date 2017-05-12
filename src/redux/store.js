@@ -18,6 +18,7 @@ export let defaultState = {
     },
     authentication: {
         signedIn: false,
+        type:"",
         credentials: {},
         userInfo: {
             profilePicture: undefined
