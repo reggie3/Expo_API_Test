@@ -15,6 +15,7 @@ export let defaultState = {
             screenStack: ["ApiTesting"],
             screenName: undefined
         },
+        responseMessage: 'Responses will appear here.'
     },
     authentication: {
         signedIn: false,
@@ -60,14 +61,9 @@ export const store = createStore(
         ))
 );
 
-//sagaMiddleware.run(MySagas.sagaActivateStory);
-//sagaMiddleware.run(MySagas.sagaDownloadPicture);
 sagaMiddleware.run(MySagas.sagaShowPendingDialog);
-sagaMiddleware.run(MySagas.sagaHidePendingDialog);
-sagaMiddleware.run(MySagas.sagaHandleSignupRejected);
-sagaMiddleware.run(MySagas.sagaHandleSignupFulfilled);
-sagaMiddleware.run(MySagas.sagaHandleSignInFulfilled);
-sagaMiddleware.run(MySagas.sagaHandleSignInRejected);
+sagaMiddleware.run(MySagas.sagaShowSuccessDialog);
+sagaMiddleware.run(MySagas.sagaShowRejectedDialog);
 sagaMiddleware.run(MySagas.sagaGetFacebookPictureAfterLogin);
 sagaMiddleware.run(MySagas.sagaGetAuth0ProfileAfterLogin);
 

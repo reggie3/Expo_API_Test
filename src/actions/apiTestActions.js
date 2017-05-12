@@ -1,4 +1,4 @@
-import apiTestUtils from '../apiTestUtils'
+import * as apiTestUtils from '../apiTestUtils'
 
 let apiTestActions = {
 

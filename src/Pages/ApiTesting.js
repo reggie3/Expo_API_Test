@@ -75,13 +75,13 @@ class ApiTestingComponent extends Component {
           flex: 2,
           justifyContent: 'space-around',
         }}>
+         <Button
+            onPress={this.post.bind(this)}
+            title="Post"
+          />
           <Button
             onPress={this.get.bind(this)}
             title="Get"
-          />
-          <Button
-            onPress={this.post.bind(this)}
-            title="Post"
           />
           <Button
             onPress={this.put.bind(this)}
@@ -112,7 +112,9 @@ class ApiTestingComponent extends Component {
 
 const mapStateToProps = (state) => {
   return Object.assign({}, {
-    authentication: state.authentication
+    authentication: state.authentication,
+    responseMessage: state.appState.responseMessage
+
   });
 }
 const mapDispatchToProps = (dispatch) => {
