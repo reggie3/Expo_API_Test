@@ -1,0 +1,22 @@
+{
+  "name": "React Native AWS API Gateway Test",
+  "description": "Proof of concept application combining react-native, expo, and AWS API Gateway, custom authorizers, and lambdas",
+  "slug": "reggie3.com/expo-api-test",
+  "entryPoint": "./ExpoAPITest",
+  "privacy": "public",
+  "sdkVersion": "16.0.0",
+  "version": "1.0.0",
+  "orientation": "portrait",
+  "primaryColor": "#cccccc",
+  "icon": "./assets/icons/app.png",
+  "loading": {
+    "icon": "./assets/icons/loading.png",
+    "hideExponentText": false
+  },
+  "packagerOpts": {
+    "assetExts": ["ttf", "mp4"]
+  },
+  "ios": {
+    "supportsTablet": true
+  }
+}
