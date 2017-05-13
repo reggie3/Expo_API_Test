@@ -6,10 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 import * as MySagas from './sagas';
 
 export let defaultState = {
-
-
     appState: {
-
         navigation: {
             currentScreen: "ApiTesting",
             screenStack: ["ApiTesting"],

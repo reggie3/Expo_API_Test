@@ -3,7 +3,7 @@ import Auth0 from 'react-native-auth0';
 import Expo from 'expo';
 import jwtDecode from 'jwt-decode';
 
-export const signUp = (auth0, newSignupInfo) => {
+/*export const signUp = (auth0, newSignupInfo) => {
     // console.log({ newSignupInfo });
     return new Promise(function (resolve, reject) {
         auth0
@@ -121,7 +121,7 @@ export const signInSocial = (auth0, social) => {
 
     });
 }
-
+*/
 
 
 export const signInFacebook = () => {
@@ -171,10 +171,10 @@ export const signInFacebook = () => {
                 }));
             })
             .catch(function (error) {
-                console.log('Request failed', error);
                 reject({
                     type: 'error',
-                });
+                    msg: 'Facebook login failed'
+                })
             });
     });
 }
@@ -200,11 +200,11 @@ export const getFacebookProfilePicture = (accessToken, facebookUserID) => {
                 console.log('Request failed', error);
                 reject({
                     type: 'error',
+                    msg: 'failed to get Facebook picture'
                 });
             });
     });
 }
-
 
 export const signInGoogle = () => {
     return new Promise(function (resolve, reject) {
@@ -227,20 +227,23 @@ export const signInGoogle = () => {
                             })
                         }));
                     case 'cancel':
-                        resolve({
+                        reject({
                             type: 'error',
                             msg: 'login canceled'
                         })
                         break;
                     default:
-                        resolve({
+                        reject({
                             type: 'error',
-                            msg: 'login failed'
+                            msg: 'Google login failed'
                         })
                 }
             })
             .catch(function (error) {
-                console.log('Request failed', error);
+                reject({
+                    type: 'error',
+                    msg: 'login failed'
+                })
             });
     });
 }

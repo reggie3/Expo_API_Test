@@ -6,23 +6,17 @@ export default function modals(modals = {}, action) {
 
     case 'SHOW_MAIN_MENU':
       return Object.assign({}, modals, { showMainMenu: action.bool });
-    /*** Generic error dialog */
+
     case 'SHOW_ERROR_DIALOG':
-      ;
-      let errorMessage = 'an error occurred';
-      switch (action.message) {
-        case 'username_exists':
-          errorMessage = 'this username is already in use'
-          break;
-      }
       return Object.assign({}, modals, {
         showErrorDialog: Object.assign({}, modals.showErrorDialog,
           {
             open: true,
-            message: errorMessage,
+            message: action.message ? action.message: "An error occured",
             title: action.title
           })
       });
+
     case 'CLOSE_ERROR_DIALOG':
       return Object.assign({}, modals, {
         showErrorDialog: Object.assign({}, modals.showErrorDialog,

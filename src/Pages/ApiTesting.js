@@ -24,32 +24,64 @@ class ApiTestingComponent extends Component {
   }
 
   post() {
-    this.props.dispatch(actions.apiTestActions.doPost(
-      this.props.authentication.type,
-      this.props.authentication.userInfo
-    ));
+    if (this.props.authentication.signedIn) {
+      this.props.dispatch(actions.apiTestActions.doPost(
+        this.props.authentication.type,
+        this.props.authentication.userInfo
+      ));
+    }
+    else{
+      this.props.dispatch(actions.modalsActions.showErrorDialog(
+        "error",
+        "you must be signed in first"
+      ))
+    }
   }
+
   get() {
-    this.props.dispatch(actions.apiTestActions.doGet(
-      this.props.authentication.type,
-      this.props.authentication.userInfo
-    ));
-
+    if (this.props.authentication.signedIn) {
+      this.props.dispatch(actions.apiTestActions.doGet(
+        this.props.authentication.type,
+        this.props.authentication.userInfo
+      ));
+    }
+    else{
+      this.props.dispatch(actions.modalsActions.showErrorDialog(
+        "error",
+        "you must be signed in first"
+      ))
+    }
   }
-  put() {
-    this.props.dispatch(actions.apiTestActions.doPut(
-      this.props.authentication.type,
-      this.props.authentication.userInfo
-    ));
 
+  put() {
+    if (this.props.authentication.signedIn) {
+      this.props.dispatch(actions.apiTestActions.doPut(
+        this.props.authentication.type,
+        this.props.authentication.userInfo
+      ));
+    }
+    else{
+      this.props.dispatch(actions.modalsActions.showErrorDialog(
+        "error",
+        "you must be signed in first"
+      ))
+    }
   }
   delete() {
-    this.props.dispatch(actions.apiTestActions.doDelete(
-      this.props.authentication.type,
-      this.props.authentication.userInfo
-    ));
-
+    if (this.props.authentication.signedIn) {
+      this.props.dispatch(actions.apiTestActions.doDelete(
+        this.props.authentication.type,
+        this.props.authentication.userInfo
+      ));
+    }
+    else{
+      this.props.dispatch(actions.modalsActions.showErrorDialog(
+        "error",
+        "you must be signed in first"
+      ))
+    }
   }
+
   render() {
     return (
       <View style={{

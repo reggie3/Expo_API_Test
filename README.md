@@ -1,3 +1,12 @@
+# Expo project combining react-native, redux, and AWS API Gateway & Lambda functions
+------------------------------------------------------------------------------------
+
+Lambda functions this this project are located in the [Expo_API_Test_Lambdas](https://github.com/reggie3/Expo_API_Test_Lambdas) repo
+This project consists of multiple branches
+1. step1_get_responses_from_lambdas 
+2. step2_add_authorizer_functionality
+
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
@@ -218,5 +227,6 @@ There are a few steps you may want to take to troubleshoot these kinds of errors
 If you're not able to scan the QR code, make sure your phone's camera is focusing correctly, and also make sure that the contrast on the two colors in your terminal is high enough. For example, WebStorm's default themes may [not have enough contrast](https://github.com/react-community/create-react-native-app/issues/49) for terminal QR codes to be scannable with the system barcode scanners that the Expo app uses.
 
 If this causes problems for you, you may want to try changing your terminal's color theme to have more contrast, or running Create React Native App from a different terminal. You can also manually enter the URL printed by the packager script in the Expo app's search bar to load it manually.
-#   E x p o _ A P I _ T e s t  
+#   E x p o _ A P I _ T e s t 
+ 
  

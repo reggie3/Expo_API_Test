@@ -27,6 +27,13 @@ function* showPendingDialog(action) {
       case 'DELETE_PENDING':
         message = "performing delete";
         break;
+      case 'SIGN_IN_GOOGLE_PENDING':
+        message = "signing in with Google";
+        break;
+      case 'SIGN_IN_FACEBOOK_PENDING':
+        message = "signing in with Facebook";
+        break;
+
     }
     yield put({
       type: "SHOW_PENDING_DIALOG",
@@ -38,7 +45,8 @@ function* showPendingDialog(action) {
 }
 
 export function* sagaShowPendingDialog() {
-  yield takeEvery(['POST_PENDING', 'GET_PENDING', 'DELETE_PENDING', 'PUT_PENDING']
+  yield takeEvery(['POST_PENDING', 'GET_PENDING', 'DELETE_PENDING', 'PUT_PENDING',
+    'SIGN_IN_GOOGLE_PENDING', 'SIGN_IN_FACEBOOK_PENDING']
     , showPendingDialog);
 }
 
@@ -63,6 +71,13 @@ function* handleAPISuccess(action) {
       case 'PUT_FULFILLED':
         message = "successful put";
         break;
+      case 'SIGN_IN_GOOGLE_FULFILLED':
+        message = "successful sign in with Google";
+        break;
+      case 'SIGN_IN_FACEBOOK_FULFILLED':
+        message = "successful sign in with Facebook";
+        break;
+
     }
     yield put({
       type: "CLOSE_PENDING_DIALOG",
@@ -81,7 +96,8 @@ function* handleAPISuccess(action) {
 }
 
 export function* sagaHandleAPISuccess() {
-  yield takeEvery(['POST_FULFILLED', 'GET_FULFILLED', 'DELETE_FULFILLED', 'PUT_FULFILLED']
+  yield takeEvery(['POST_FULFILLED', 'GET_FULFILLED', 'DELETE_FULFILLED', 'PUT_FULFILLED',
+    'SIGN_IN_GOOGLE_FULFILLED', 'SIGN_IN_FACEBOOK_FULFILLED']
     , handleAPISuccess);
 }
 
@@ -106,8 +122,14 @@ function* handleAPIRejected(action) {
       case 'DELETE_REJECTED':
         message = "delete rejected";
         break;
+      case 'SIGN_IN_GOOGLE_REJECTED':
+        message = "failed to sign in with Google";
+        break;
+      case 'SIGN_IN_FACEBOOK_REJECTED':
+        message = "failed to sign in with Facebook";
+        break;
     }
-     yield put({
+    yield put({
       type: "CLOSE_PENDING_DIALOG",
     });
     yield put({
@@ -116,7 +138,7 @@ function* handleAPIRejected(action) {
     });
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
-      response: action.payload.error
+      response: action.payload.msg
     });
   } catch (e) {
     yield console.log('ERROR: showRejectedDialog');
@@ -124,7 +146,8 @@ function* handleAPIRejected(action) {
 }
 
 export function* sagaHandleAPIRejected() {
-  yield takeEvery(['POST_REJECTED', 'GET_REJECTED', 'DELETE_REJECTED', 'PUT_REJECTED']
+  yield takeEvery(['POST_REJECTED', 'GET_REJECTED', 'DELETE_REJECTED', 'PUT_REJECTED',
+    'SIGN_IN_GOOGLE_REJECTED', 'SIGN_IN_FACEBOOK_REJECTED']
     , handleAPIRejected);
 }
 
