@@ -44,24 +44,24 @@ export function* sagaShowPendingDialog() {
 
 
 /****
- * showSuccessDialog
+ * handleAPISuccess
  * 
  */
-function* showSuccessDialog(action) {
+function* handleAPISuccess(action) {
   try {
     let message = "";
     switch (action.type) {
       case 'POST_FULFILLED':
-        message = "performing post";
+        message = "successful post";
         break;
       case 'GET_FULFILLED':
-        message = "performing get";
+        message = "successful get";
         break;
       case 'DELETE_FULFILLED':
-        message = "performing put";
+        message = "successful delete";
         break;
       case 'PUT_FULFILLED':
-        message = "performing delete";
+        message = "successful put";
         break;
     }
     yield put({
@@ -71,21 +71,25 @@ function* showSuccessDialog(action) {
       type: "SHOW_SUCCESS_DIALOG",
       message: message
     });
+    yield put({
+      type: 'UPDATE_RESPONSE_MESSAGE',
+      response: action.payload.response
+    });
   } catch (e) {
     yield console.log('ERROR: showSuccessDialog');
   }
 }
 
-export function* sagaShowSuccessDialog() {
+export function* sagaHandleAPISuccess() {
   yield takeEvery(['POST_FULFILLED', 'GET_FULFILLED', 'DELETE_FULFILLED', 'PUT_FULFILLED']
-    , showSuccessDialog);
+    , handleAPISuccess);
 }
 
 /****
- * showRejectedDialog
+ * handleAPIRejected
  * 
  */
-function* showRejectedDialog(action) {
+function* handleAPIRejected(action) {
   try {
     // console.log("showRejectedDialog");
     let message = "";
@@ -103,18 +107,25 @@ function* showRejectedDialog(action) {
         message = "delete rejected";
         break;
     }
+     yield put({
+      type: "CLOSE_PENDING_DIALOG",
+    });
     yield put({
       type: "SHOW_REJECTED_DIALOG",
       message: message
+    });
+    yield put({
+      type: 'UPDATE_RESPONSE_MESSAGE',
+      response: action.payload.error
     });
   } catch (e) {
     yield console.log('ERROR: showRejectedDialog');
   }
 }
 
-export function* sagaShowRejectedDialog() {
+export function* sagaHandleAPIRejected() {
   yield takeEvery(['POST_REJECTED', 'GET_REJECTED', 'DELETE_REJECTED', 'PUT_REJECTED']
-    , showRejectedDialog);
+    , handleAPIRejected);
 }
 
 function* getFacebookPictureAfterLogin(action) {

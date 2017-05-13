@@ -75,7 +75,7 @@ class ApiTestingComponent extends Component {
           flex: 2,
           justifyContent: 'space-around',
         }}>
-         <Button
+          <Button
             onPress={this.post.bind(this)}
             title="Post"
           />
@@ -101,8 +101,8 @@ class ApiTestingComponent extends Component {
           padding: 5
         }}>
           <Text ref={(component) => { this.textbox = component }}>
-            Response information will appear here
-            </Text>
+            {this.props.responseMessage}
+          </Text>
         </View>
       </View>
     )

@@ -8,7 +8,7 @@ export default function modals(modals = {}, action) {
       return Object.assign({}, modals, { showMainMenu: action.bool });
     /*** Generic error dialog */
     case 'SHOW_ERROR_DIALOG':
-      debugger;
+      ;
       let errorMessage = 'an error occurred';
       switch (action.message) {
         case 'username_exists':

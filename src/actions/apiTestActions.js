@@ -10,19 +10,19 @@ let apiTestActions = {
     },
     doGet: function (service, userInfo) {
         return {
-            type: 'get',
+            type: 'GET',
             payload: apiTestUtils.doGet(service, userInfo)
         }
     },
     doPut: function (service, userInfo) {
         return {
-            type: 'put',
+            type: 'PUT',
             payload: apiTestUtils.doPut(service, userInfo)
         }
     },
     doDelete: function (service, userInfo) {
         return {
-            type: 'delete',
+            type: 'DELETE',
             payload: apiTestUtils.doDelete(service, userInfo)
         }
     }

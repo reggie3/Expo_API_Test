@@ -15,7 +15,7 @@ export const signUp = (auth0, newSignupInfo) => {
             appSecrets.auth0.connection
             )
             .then((user) => {
-                debugger;
+                ;
                 console.log(user)
                 resolve({
                     type: 'success',
@@ -86,7 +86,7 @@ export const resetAuth0Password = (accessToken) => {
             }
         })
             .then((response) => {
-                debugger
+                
                 return response.json();
             })
             .then((jsonResponse) => {
@@ -98,7 +98,7 @@ export const resetAuth0Password = (accessToken) => {
     });
 }
 export const signInSocial = (auth0, social) => {
-    debugger
+    
     return new Promise(function (resolve, reject) {
         var webAuth = new Auth0js.WebAuth({
             domain: 'reggie3.auth0.com',
@@ -108,7 +108,7 @@ export const signInSocial = (auth0, social) => {
             connection: social
         })
             .then((credentials) => {
-                debugger
+                
                 resolve({
                     type: 'success',
                     credentials

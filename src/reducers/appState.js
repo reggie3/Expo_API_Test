@@ -1,6 +1,6 @@
 export default function appState(appState = {}, action) {
     switch (action.type) {
-        
+
         case 'NAVIGATE_TO':
             return Object.assign({}, appState, {
                 navigation:
@@ -30,6 +30,14 @@ export default function appState(appState = {}, action) {
             }
             return appState;
 
+        case 'UPDATE_RESPONSE_MESSAGE':
+        /**** 
+         * could the parse the response as shown below and use it for other purposes.
+         * const response = JSON.parse(action.response);
+         */
+            return Object.assign({}, appState, {
+                responseMessage: action.response
+            })
 
         default:
             return appState;
