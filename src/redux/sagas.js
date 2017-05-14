@@ -86,6 +86,7 @@ function* handleAPISuccess(action) {
       type: "SHOW_SUCCESS_DIALOG",
       message: message
     });
+    debugger;
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
       responseType: action.payload.responseType,
@@ -97,12 +98,31 @@ function* handleAPISuccess(action) {
 }
 
 export function* sagaHandleAPISuccess() {
-  yield takeEvery(['POST_FULFILLED', 'GET_FULFILLED', 'DELETE_FULFILLED', 'PUT_FULFILLED',
-    'SIGN_IN_GOOGLE_FULFILLED', 'SIGN_IN_FACEBOOK_FULFILLED']
+  yield takeEvery(['POST_FULFILLED', 'GET_FULFILLED', 'DELETE_FULFILLED', 'PUT_FULFILLED']
     , handleAPISuccess);
 }
 
-/****
+
+/****************************************************************
+ * handleLoginCompleted
+ */
+function* handleLoginCompleted(action) {
+  try {
+
+    yield put({
+      type: "CLOSE_PENDING_DIALOG",
+    });
+
+  } catch (e) {
+    yield console.log('ERROR: showSuccessDialog');
+  }
+}
+export function* sagaHandleLoginCompleted() {
+  yield takeEvery(['SIGN_IN_GOOGLE_FULFILLED', 'SIGN_IN_FACEBOOK_FULFILLED']
+    , handleLoginCompleted);
+}
+
+/****************************************************************
  * handleAPIRejected
  * 
  */
@@ -139,7 +159,8 @@ function* handleAPIRejected(action) {
     });
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
-      response: action.payload.msg
+      responseType: action.payload.responseType,
+      responseMessage: action.payload.responseMessage
     });
   } catch (e) {
     yield console.log('ERROR: showRejectedDialog');

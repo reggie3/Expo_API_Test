@@ -7,28 +7,27 @@ const createAuthorizationString = (service, userInfo) => {
     return authString;
 }
 
-
-const parseResponse = (responseStatus, resolve) => {
-    debugger;
-        switch (responseStatus) {
-            case 200:
-                return response.text();
-            case 500:
-                resolve({
-                    responseType: 'error',
-                    responseMessage: 'server error'
-                });
-            case 403:
-                resolve({
-                    responseType: 'error',
-                    responseMessage: 'access forbidden'
-                });
-            default:
-                resolve({
-                    responseType: 'error',
-                    responseMessage: 'unknown error'
-                });
-        }
+/***************************
+ * handle error responses to requests.  successful request return a response to the calling promise
+ */
+const handleErrors = (responseStatus, resolve) => {
+    switch (responseStatus) {
+        case 500:
+            resolve({
+                responseType: 'error',
+                responseMessage: 'server error'
+            });
+        case 403:
+            resolve({
+                responseType: 'error',
+                responseMessage: 'access forbidden'
+            });
+        default:
+            resolve({
+                responseType: 'error',
+                responseMessage: 'unknown error'
+            });
+    }
 }
 
 export const doPost = (service, userInfo) => {
@@ -47,22 +46,27 @@ export const doPost = (service, userInfo) => {
             })
         })
             .then((response) => {
-               parseResponse(response.status, resolve);
-    })
-        .then((response) => {
-            resolve({
-                responseType: 'success',
-                responseMessage: response
-            });
-        })
-        .catch((error) => {
-            console.log({ error });
-            reject({
-                responseType: 'error',
-                responseMessage: error.message
-            });
-        })
-});
+                if (response.status !== 200) {
+                    handleErrors(response.status, resolve)
+                }
+                else {
+                    return response.text();
+                }
+            })
+            .then((text) => {
+                resolve({
+                    responseType: 'success',
+                    responseMessage: text
+                });
+            })
+            .catch((error) => {
+                console.log({ error });
+                reject({
+                    responseType: 'error',
+                    responseMessage: error.message
+                });
+            })
+    });
 }
 export const doGet = (service, userInfo) => {
     return new Promise(function (resolve, reject) {
@@ -81,20 +85,16 @@ export const doGet = (service, userInfo) => {
         })
             .then((response) => {
                 if (response.status !== 200) {
-                    response.json()
-                    resolve({
-                        responseType: 'error',
-                        responseMessage: 'unable to get'
-                    })
+                    handleErrors(response.status, resolve)
                 }
                 else {
                     return response.text();
                 }
             })
-            .then((response) => {
+             .then((text) => {
                 resolve({
                     responseType: 'success',
-                    responseMessage: response
+                    responseMessage: text
                 });
             })
             .catch((error) => {
@@ -119,8 +119,12 @@ export const doPut = (service, userInfo) => {
             })
         })
             .then((response) => {
-                debugger;
-                return response.text();
+                if (response.status !== 200) {
+                    handleErrors(response.status, resolve)
+                }
+                else {
+                    return response.text();
+                }
             })
             .then((response) => {
                 resolve(resolve({
@@ -151,7 +155,12 @@ export const doDelete = (service, userInfo) => {
             })
         })
             .then((response) => {
-                return response.text();
+                if (response.status !== 200) {
+                    handleErrors(response.status, resolve)
+                }
+                else {
+                    return response.text();
+                }
             })
             .then((response) => {
                 resolve(resolve({

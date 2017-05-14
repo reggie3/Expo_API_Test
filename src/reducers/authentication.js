@@ -64,7 +64,6 @@ export default function authentication(authentication = {}, action) {
             return authentication;
         case 'SIGN_IN_FACEBOOK_FULFILLED':
             if (action.payload.type !== 'error')
-
                 return Object.assign({}, authentication, {
                     signedIn: true,
                     type: 'facebook',
@@ -85,7 +84,6 @@ export default function authentication(authentication = {}, action) {
         case 'SIGN_IN_GOOGLE_REJECTED':
             return authentication;
         case 'SIGN_IN_GOOGLE_FULFILLED':
-            // debugger;
             if (action.payload.type !== 'error')
                 return Object.assign({}, authentication, {
                     signedIn: true,

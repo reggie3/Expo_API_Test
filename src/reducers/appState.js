@@ -35,7 +35,6 @@ export default function appState(appState = {}, action) {
          * could the parse the response as shown below and use it for other purposes.
          * const response = JSON.parse(action.response);
          */
-        debugger;
             return Object.assign({}, appState, {
                 responseMessage: action.responseMessage
             })
