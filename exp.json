@@ -1,7 +1,7 @@
 {
-  "name": "React Native AWS API Gateway Test",
+  "name": "Expo AWS API Gateway Test",
   "description": "Proof of concept application combining react-native, expo, and AWS API Gateway, custom authorizers, and lambdas",
-  "slug": "reggie3.com/expo-api-test",
+  "slug": "expo-api-test-reggie3-com",
   "entryPoint": "./ExpoAPITest",
   "privacy": "public",
   "sdkVersion": "16.0.0",

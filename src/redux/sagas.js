@@ -88,7 +88,8 @@ function* handleAPISuccess(action) {
     });
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
-      response: action.payload.response
+      responseType: action.payload.responseType,
+      responseMessage: action.payload.responseMessage
     });
   } catch (e) {
     yield console.log('ERROR: showSuccessDialog');

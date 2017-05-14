@@ -123,7 +123,6 @@ export default function authentication(authentication = {}, action) {
                 return authentication;
 
         case 'SIGN_OUT_USER':
-        debugger;
             return {
                 signedIn: false,
                 type: "",

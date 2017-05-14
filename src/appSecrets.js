@@ -20,7 +20,6 @@ const appSecrets = {
    
     aws: {
         apiURL: `https://4fu0bl5046.execute-api.us-east-1.amazonaws.com/production2`
-        
     }
 };
 

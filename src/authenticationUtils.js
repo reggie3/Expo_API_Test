@@ -153,7 +153,6 @@ export const signInFacebook = () => {
             .then((token) => {
                 accessToken = token;
                 return fetch(`https://graph.facebook.com/me?fields=id,name,email,birthday&access_token=${token}`);
-
             })
             .then((response) => {
                 return response.json();

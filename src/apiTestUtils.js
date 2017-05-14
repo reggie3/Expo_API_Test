@@ -7,12 +7,39 @@ const createAuthorizationString = (service, userInfo) => {
     return authString;
 }
 
+
+const parseResponse = (responseStatus, resolve) => {
+    debugger;
+        switch (responseStatus) {
+            case 200:
+                return response.text();
+            case 500:
+                resolve({
+                    responseType: 'error',
+                    responseMessage: 'server error'
+                });
+            case 403:
+                resolve({
+                    responseType: 'error',
+                    responseMessage: 'access forbidden'
+                });
+            default:
+                resolve({
+                    responseType: 'error',
+                    responseMessage: 'unknown error'
+                });
+        }
+}
+
 export const doPost = (service, userInfo) => {
     return new Promise(function (resolve, reject) {
         fetch(appSecrets.aws.apiURL, {
             method: 'POST',
             headers: {
-                'authorizationToken':  createAuthorizationString(service, userInfo)
+                // changed the header name to Auth becuase authorizationToken wasn't working
+                // for some reason even if the Custom Authorizer's Identiy token sources was 
+                // set to method.request.header.authorizationToken
+                'Auth': createAuthorizationString(service, userInfo)
             },
             body: JSON.stringify({
                 'bodyParam1': 'this is the first param',
@@ -20,29 +47,29 @@ export const doPost = (service, userInfo) => {
             })
         })
             .then((response) => {
-                return response.text();
-            })
-            .then((response) => {
-                resolve(resolve({
-                    type: 'success',
-                    response
-                }));
-            })
-            .catch((error) => {
-                console.log({ error });
-                reject({
-                    type: 'error',
-                    msg: error.message
-                });
-            })
-    });
+               parseResponse(response.status, resolve);
+    })
+        .then((response) => {
+            resolve({
+                responseType: 'success',
+                responseMessage: response
+            });
+        })
+        .catch((error) => {
+            console.log({ error });
+            reject({
+                responseType: 'error',
+                responseMessage: error.message
+            });
+        })
+});
 }
 export const doGet = (service, userInfo) => {
     return new Promise(function (resolve, reject) {
         fetch(appSecrets.aws.apiURL, {
             method: 'GET',
             headers: {
-                'authorizationToken': createAuthorizationString(service, userInfo)
+                'Auth': createAuthorizationString(service, userInfo)
             },
             /* 
             *** GET methods don't take a body parameter.  Uncommenting the lines below
@@ -53,18 +80,27 @@ export const doGet = (service, userInfo) => {
              })*/
         })
             .then((response) => {
-                return response.text();
+                if (response.status !== 200) {
+                    response.json()
+                    resolve({
+                        responseType: 'error',
+                        responseMessage: 'unable to get'
+                    })
+                }
+                else {
+                    return response.text();
+                }
             })
             .then((response) => {
                 resolve({
-                    type: 'success',
-                    response
+                    responseType: 'success',
+                    responseMessage: response
                 });
             })
             .catch((error) => {
                 console.log({ error });
                 reject({
-                    type: 'failure',
+                    responseType: 'failure',
                     error: error.message
                 });
             })
@@ -75,7 +111,7 @@ export const doPut = (service, userInfo) => {
         fetch(appSecrets.aws.apiURL, {
             method: 'PUT',
             headers: {
-                'authorizationToken': createAuthorizationString(service, userInfo)
+                'Auth': createAuthorizationString(service, userInfo)
             },
             body: JSON.stringify({
                 'bodyParam1': 'this is the first param',
@@ -83,18 +119,19 @@ export const doPut = (service, userInfo) => {
             })
         })
             .then((response) => {
+                debugger;
                 return response.text();
             })
             .then((response) => {
                 resolve(resolve({
-                    type: 'success',
-                    response
+                    responseType: 'success',
+                    responseMessage: response
                 }));
             })
             .catch((error) => {
                 console.log({ error });
                 reject({
-                    type: 'failure',
+                    responseType: 'failure',
                     error: error.message
                 });
             })
@@ -106,7 +143,7 @@ export const doDelete = (service, userInfo) => {
         fetch(appSecrets.aws.apiURL, {
             method: 'DELETE',
             headers: {
-                'authorizationToken': createAuthorizationString(service, userInfo)
+                'Auth': createAuthorizationString(service, userInfo)
             },
             body: JSON.stringify({
                 'bodyParam1': 'this is the first param',
@@ -118,14 +155,14 @@ export const doDelete = (service, userInfo) => {
             })
             .then((response) => {
                 resolve(resolve({
-                    type: 'success',
-                    response
+                    responseType: 'success',
+                    responseMessage: response
                 }));
             })
             .catch((error) => {
                 console.log({ error });
                 reject({
-                    type: 'failure',
+                    responseType: 'failure',
                     error: error.message
                 });
             })
