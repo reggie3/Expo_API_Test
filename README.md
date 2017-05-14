@@ -3,8 +3,9 @@
 
 Lambda functions this this project are located in the [Expo_API_Test_Lambdas](https://github.com/reggie3/Expo_API_Test_Lambdas) repo
 This project consists of multiple branches
-1. step1_get_responses_from_lambdas 
-2. step2_add_authorizer_functionality
+1. step1_get_responses_from_lambdas focuses on passing requests to and getting responses from social loging providers and Lambda functions
+2. step2_add_authorizer_functionality enables proper interaction with API Gateway custom organizers
+3. step3_cache_authentication_info caches the credential information to the local machine so that the user doesn't have to keep logging every time they open the application
 
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).

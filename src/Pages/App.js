@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Text,
-    View, Button, BackAndroid, UIManager, Platform
+    View,  BackAndroid, Platform, AppState
 } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
 
@@ -29,10 +28,7 @@ Provider.childContextTypes = {
     storeSubscription: React.PropTypes.object
 }
 
-if (Platform.OS === 'android') {
-    UIManager.setLayoutAnimationEnabledExperimental &&
-        UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+
 
 
 class AppComponent extends Component {
@@ -45,7 +41,8 @@ class AppComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            appIsReady: false
+            appIsReady: false,
+            appState: AppState.currentState,
         };
     }
 
@@ -56,8 +53,9 @@ class AppComponent extends Component {
     }
 
     initApplication() {
+        AppState.addEventListener('change', this.handleAppStateChange);
+        AppState.addEventListener('memoryWarning', this._handleMemoryWarning);
         this.addBackButtonListener();
-        this.initAuthServices()
     }
 
     addBackButtonListener() {
@@ -69,27 +67,8 @@ class AppComponent extends Component {
             }
             return false;
         });
-
-
     }
 
-    
-    initAuthServices() {
-        const auth0 = new Auth0(appSecrets.auth0.domain);
-        this.props.dispatch(actions.authenticationActions.initAuth(auth0));
-    }
-    async getLocationAsync() {
-        const { Location, Permissions } = expo;
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status === 'granted') {
-            return Location.getCurrentPositionAsync({ enableHighAccuracy: false });
-        } else {
-            throw new Error('Location permission not granted');
-        }
-    }
-
-
-   
     closeSuccessDialog() {
         this.props.dispatch(actions.modalsActions.closeSuccessDialog());
     }
@@ -98,12 +77,29 @@ class AppComponent extends Component {
         this.props.dispatch(actions.modalsActions.closeErrorDialog());
     }
 
-
-
     componentWillUnmount() {
         this.state.removeFunction.remove();
+        AppState.removeEventListener('change', this._handleAppStateChange);
+        AppState.removeEventListener('memoryWarning', this._handleMemoryWarning);
         console.log("unmounting App");
     }
+
+    // handle app state changes.  Save some state to persistant storage
+    //  everytime the app moves the the background
+    handleAppStateChange = (nextAppState) => {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            console.log('App has come to the foreground!')
+        }
+        else if (this.state.appState === 'active' && nextAppState.match(/inactive|background/)) {
+            console.log('App has gone to background!')
+        }
+
+        this.setState({ appState: nextAppState });
+    }
+
+    _handleMemoryWarning = () => {
+        this.setState({ memoryWarnings: this.state.memoryWarnings + 1 });
+    };
 
     render() {
         console.log("Show main menu:" + this.props.showMainMenu);
@@ -125,8 +121,6 @@ class AppComponent extends Component {
                         message={this.props.showSuccessDialog.message}
                         setVisible={this.closeSuccessDialog.bind(this)}
                     />
-
-                    
                     <Header />
                     {
                         renderIf(this.props.showMainMenu === true)(

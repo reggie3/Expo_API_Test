@@ -12,7 +12,7 @@ export let defaultState = {
             screenStack: ["ApiTesting"],
             screenName: undefined
         },
-        responseMessage: 'Responses will appear here.'
+        responseMessage: 'Responses will appear here.',
     },
     authentication: {
         signedIn: true,
