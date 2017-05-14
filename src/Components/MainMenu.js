@@ -33,12 +33,10 @@ constructor(props) {
 
     componentDidMount() {
         this.animatable.bounceIn(500)
-        //debugger
     }
 
     componentWillUnmount() {
         this.animatable.fadeOut(500)
-        //debugger
     }
 
     render() {
