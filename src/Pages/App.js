@@ -7,7 +7,6 @@ import actions from '../actions/actions';
 import PendingModal from '../Components/PendingModal';
 import ErrorModal from '../Components/ErrorModal';
 import SuccessModal from '../Components/SuccessModal';
-import Auth0 from 'react-native-auth0';
 import appSecrets from '../appSecrets';
 import screens from './screens';
 import Header from '../Components/Header';
