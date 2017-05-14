@@ -86,7 +86,6 @@ function* handleAPISuccess(action) {
       type: "SHOW_SUCCESS_DIALOG",
       message: message
     });
-    debugger;
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
       responseType: action.payload.responseType,
