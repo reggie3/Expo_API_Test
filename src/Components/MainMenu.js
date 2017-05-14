@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Button, Modal, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, Text, Button, TouchableHighlight } from 'react-native';
 import { globalStyles } from '../globals/styles';
 import { connect } from 'react-redux';
 import actions from '../actions/actions';
@@ -33,12 +33,10 @@ constructor(props) {
 
     componentDidMount() {
         this.animatable.bounceIn(500)
-        //debugger
     }
 
     componentWillUnmount() {
         this.animatable.fadeOut(500)
-        //debugger
     }
 
     render() {

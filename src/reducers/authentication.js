@@ -30,7 +30,6 @@ export default function authentication(authentication = {}, action) {
         case 'SIGN_IN_AUTH0_USER_PENDING':
             return authentication;
         case 'SIGN_IN_AUTH0_USER_REJECTED':
-            debugger
             return authentication;
         case 'SIGN_IN_AUTH0_USER_FULFILLED':
             return Object.assign({}, authentication, {
@@ -85,7 +84,6 @@ export default function authentication(authentication = {}, action) {
         case 'SIGN_IN_GOOGLE_REJECTED':
             return authentication;
         case 'SIGN_IN_GOOGLE_FULFILLED':
-            // debugger;
             if (action.payload.type !== 'error')
                 return Object.assign({}, authentication, {
                     signedIn: true,
@@ -123,7 +121,6 @@ export default function authentication(authentication = {}, action) {
                 return authentication;
 
         case 'SIGN_OUT_USER':
-        debugger;
             return {
                 signedIn: false,
                 type: "",
@@ -134,8 +131,7 @@ export default function authentication(authentication = {}, action) {
             }
 
         case 'GET_FACEBOOK_PROFILE_PICTURE_FULFILLED':
-            /*console.log("*********************************************");
-            debugger;*/
+
             return Object.assign({}, authentication, {
                 userInfo: Object.assign({}, authentication.userInfo,
                     { profilePicture: action.payload.pictureData.data.url })

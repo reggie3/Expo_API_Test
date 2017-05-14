@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View, Button, BackAndroid, UIManager, Platform
-} from 'react-native';
+import { StyleSheet, View, BackAndroid, } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
 
 
@@ -22,18 +18,10 @@ import renderIf from 'render-if';
 import MainMenu from '../Components/MainMenu';
 
 
-
-
 Provider.childContextTypes = {
     store: React.PropTypes.object,
     storeSubscription: React.PropTypes.object
 }
-
-if (Platform.OS === 'android') {
-    UIManager.setLayoutAnimationEnabledExperimental &&
-        UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
 
 class AppComponent extends Component {
     static navigationOptions: {
@@ -57,7 +45,6 @@ class AppComponent extends Component {
 
     initApplication() {
         this.addBackButtonListener();
-        this.initAuthServices()
     }
 
     addBackButtonListener() {
@@ -69,27 +56,8 @@ class AppComponent extends Component {
             }
             return false;
         });
-
-
     }
 
-    
-    initAuthServices() {
-        const auth0 = new Auth0(appSecrets.auth0.domain);
-        this.props.dispatch(actions.authenticationActions.initAuth(auth0));
-    }
-    async getLocationAsync() {
-        const { Location, Permissions } = expo;
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status === 'granted') {
-            return Location.getCurrentPositionAsync({ enableHighAccuracy: false });
-        } else {
-            throw new Error('Location permission not granted');
-        }
-    }
-
-
-   
     closeSuccessDialog() {
         this.props.dispatch(actions.modalsActions.closeSuccessDialog());
     }
@@ -97,8 +65,6 @@ class AppComponent extends Component {
     closeErrorDialog() {
         this.props.dispatch(actions.modalsActions.closeErrorDialog());
     }
-
-
 
     componentWillUnmount() {
         this.state.removeFunction.remove();
@@ -126,7 +92,6 @@ class AppComponent extends Component {
                         setVisible={this.closeSuccessDialog.bind(this)}
                     />
 
-                    
                     <Header />
                     {
                         renderIf(this.props.showMainMenu === true)(
