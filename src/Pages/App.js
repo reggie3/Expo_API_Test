@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, BackAndroid, } from 'react-native';
-import { Constants, Location, Permissions } from 'expo';
-
-
 import { Provider } from 'react-redux'
 import { store } from '../redux/store';
 import { connect } from 'react-redux';
@@ -10,13 +7,11 @@ import actions from '../actions/actions';
 import PendingModal from '../Components/PendingModal';
 import ErrorModal from '../Components/ErrorModal';
 import SuccessModal from '../Components/SuccessModal';
-import Auth0 from 'react-native-auth0';
 import appSecrets from '../appSecrets';
 import screens from './screens';
 import Header from '../Components/Header';
 import renderIf from 'render-if';
 import MainMenu from '../Components/MainMenu';
-
 
 Provider.childContextTypes = {
     store: React.PropTypes.object,
