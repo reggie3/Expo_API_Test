@@ -1,7 +1,4 @@
 import appSecrets from './appSecrets';
-import Expo from 'expo';
-import jwtDecode from 'jwt-decode';
-
 
 export const signInFacebook = () => {
     return new Promise(function (resolve, reject) {
