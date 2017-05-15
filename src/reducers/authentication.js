@@ -132,11 +132,17 @@ export default function authentication(authentication = {}, action) {
 
         case 'GET_FACEBOOK_PROFILE_PICTURE_FULFILLED':
             /*console.log("*********************************************");
-            debugger;*/
+            */
             return Object.assign({}, authentication, {
                 userInfo: Object.assign({}, authentication.userInfo,
                     { profilePicture: action.payload.pictureData.data.url })
             });
+
+        case 'LOAD_AUTHENTICATION_FROM_STORAGE_FULFILLED':
+            return action.payload.item;
+
+        case 'SET_STORED_AUTHENTICATION_CHECKED':
+            return Object.assign({}, authentication, { storedAuthenticationChecked: action.bool });
 
         default:
             return authentication;

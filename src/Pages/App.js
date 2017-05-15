@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,  BackAndroid, Platform, AppState
-} from 'react-native';
-import { Constants, Location, Permissions } from 'expo';
-
-
+import { StyleSheet, View, BackAndroid, AppState } from 'react-native';
 import { Provider } from 'react-redux'
 import { store } from '../redux/store';
 import { connect } from 'react-redux';
@@ -19,17 +13,12 @@ import screens from './screens';
 import Header from '../Components/Header';
 import renderIf from 'render-if';
 import MainMenu from '../Components/MainMenu';
-
-
-
+import * as storageUtils from '../storageUtils';
 
 Provider.childContextTypes = {
     store: React.PropTypes.object,
     storeSubscription: React.PropTypes.object
 }
-
-
-
 
 class AppComponent extends Component {
     static navigationOptions: {
@@ -53,9 +42,23 @@ class AppComponent extends Component {
     }
 
     initApplication() {
+        // add event listeners
         AppState.addEventListener('change', this.handleAppStateChange);
-        AppState.addEventListener('memoryWarning', this._handleMemoryWarning);
+        AppState.addEventListener('memoryWarning', this.handleMemoryWarning);
         this.addBackButtonListener();
+
+        // intialize the storage system
+        let initedStorage = storageUtils.initStorage();
+        this.props.dispatch(actions.appStateActions.saveStorage(initedStorage));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // listen for when the appState changes and authentication storedAuthenticationChecked key
+        // is false indicating that credentials haven't alredy been filled from storage
+        if((nextProps.appState.storage !== this.props.appState.storage)&&(!this.props.authentication.storedAuthenticationChecked)){
+            console.log('checking stored authentication') 
+            this.props.dispatch(actions.authenticationActions.loadAuthenticationFromStorage(nextProps.appState.storage));
+        }
     }
 
     addBackButtonListener() {
@@ -78,10 +81,22 @@ class AppComponent extends Component {
     }
 
     componentWillUnmount() {
+        
         this.state.removeFunction.remove();
-        AppState.removeEventListener('change', this._handleAppStateChange);
-        AppState.removeEventListener('memoryWarning', this._handleMemoryWarning);
+        AppState.removeEventListener('change', this.handleAppStateChange);
+        AppState.removeEventListener('memoryWarning', this.handleMemoryWarning);
         console.log("unmounting App");
+    }
+
+    storeState(){
+        // if the user is signed in, store their authentication information
+        // otherwise remove any authentication information from the store
+        if(this.props.authentication.signedIn){
+            storageUtils.saveToStorage(this.props.appState.storage, 'authentication', this.props.authentication);
+        }
+        else{
+            storageUtils.removeFromStorage(this.props.appState.storage, 'authentication');
+        }
     }
 
     // handle app state changes.  Save some state to persistant storage
@@ -91,18 +106,19 @@ class AppComponent extends Component {
             console.log('App has come to the foreground!')
         }
         else if (this.state.appState === 'active' && nextAppState.match(/inactive|background/)) {
-            console.log('App has gone to background!')
+            console.log('App has gone to background!');
+            // save stuff to storage
+            this.storeState();
         }
 
         this.setState({ appState: nextAppState });
     }
 
-    _handleMemoryWarning = () => {
+    handleMemoryWarning = () => {
         this.setState({ memoryWarnings: this.state.memoryWarnings + 1 });
     };
 
     render() {
-        console.log("Show main menu:" + this.props.showMainMenu);
         return (
             <Provider store={store}>
                 <View style={StyleSheet.absoluteFill}>
@@ -152,9 +168,8 @@ const mapStateToProps = (state) => {
         showErrorDialog: state.modals.showErrorDialog,
         showSuccessDialog: state.modals.showSuccessDialog,
         sideDrawer: state.appState.sideDrawer,
-        showMainMenu: state.modals.showMainMenu
-
-
+        showMainMenu: state.modals.showMainMenu,
+        authentication: state.authentication
     });
 }
 

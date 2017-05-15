@@ -31,12 +31,17 @@ export default function appState(appState = {}, action) {
             return appState;
 
         case 'UPDATE_RESPONSE_MESSAGE':
-        /**** 
-         * could the parse the response as shown below and use it for other purposes.
-         * const response = JSON.parse(action.response);
-         */
+            /**** 
+             * could parse the response as shown below and use it for other purposes.
+             * const response = JSON.parse(action.response);
+             */
             return Object.assign({}, appState, {
                 responseMessage: action.responseMessage
+            })
+
+        case 'SAVE_STORAGE':
+            return Object.assign({}, appState, {
+                storage: action.storage
             })
 
         default:

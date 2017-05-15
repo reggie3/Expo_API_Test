@@ -13,8 +13,9 @@ export let defaultState = {
             screenName: undefined
         },
         responseMessage: 'Responses will appear here.',
+        storage: undefined  // handle to react-native-storage object
     },
-    authentication: {
+    /*authentication: {
         signedIn: true,
         type: "facebook",
         credentials: {
@@ -32,6 +33,13 @@ export let defaultState = {
             birthday: "02/18/1975",
             profilePicture: "https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/1933929_101615003190388_2730536_n.jpg?oh=7c685b149677416fd3c76b43e1a5cc61&oe=597ADC7C"
         }
+    },*/
+    authentication: {
+        storedAuthenticationChecked: false,
+        signedIn: false,
+        type: "",
+        credentials: {},
+        userInfo: {}
     },
     apiTest: {
 
@@ -74,4 +82,5 @@ sagaMiddleware.run(MySagas.sagaHandleAPISuccess);
 sagaMiddleware.run(MySagas.sagaHandleAPIRejected);
 sagaMiddleware.run(MySagas.sagaGetFacebookPictureAfterLogin);
 sagaMiddleware.run(MySagas.sagaHandleLoginCompleted);
+sagaMiddleware.run(MySagas.sagaHandleStorageInitialization);
 

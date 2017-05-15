@@ -86,7 +86,7 @@ function* handleAPISuccess(action) {
       type: "SHOW_SUCCESS_DIALOG",
       message: message
     });
-    debugger;
+    
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
       responseType: action.payload.responseType,
@@ -189,4 +189,15 @@ function* getFacebookPictureAfterLogin(action) {
 }
 export function* sagaGetFacebookPictureAfterLogin() {
   yield takeEvery(['SIGN_IN_FACEBOOK_FULFILLED'], getFacebookPictureAfterLogin);
+}
+
+function* handleStorageInitialization(action){
+    try {
+    console.log({action});
+  } catch (e) {
+    yield console.log('ERROR: showRejectedDialog');
+  }
+}
+export function* sagaHandleStorageInitialization(){
+  yield takeEvery(['SAVE_STORAGE'], handleStorageInitialization);
 }
