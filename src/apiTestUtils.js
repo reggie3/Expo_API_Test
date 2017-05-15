@@ -35,9 +35,6 @@ export const doPost = (service, userInfo) => {
         fetch(appSecrets.aws.apiURL, {
             method: 'POST',
             headers: {
-                // changed the header name to Auth becuase authorizationToken wasn't working
-                // for some reason even if the Custom Authorizer's Identiy token sources was 
-                // set to method.request.header.authorizationToken
                 'Auth': createAuthorizationString(service, userInfo)
             },
             body: JSON.stringify({

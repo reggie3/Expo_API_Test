@@ -28,12 +28,6 @@ function* showPendingDialog(action) {
         message = "performing delete";
         break;
       case 'SIGN_IN_GOOGLE_PENDING':
-        message = "signing in with Google";
-        break;
-      case 'SIGN_IN_FACEBOOK_PENDING':
-        message = "signing in with Facebook";
-        break;
-
     }
     yield put({
       type: "SHOW_PENDING_DIALOG",
@@ -45,8 +39,7 @@ function* showPendingDialog(action) {
 }
 
 export function* sagaShowPendingDialog() {
-  yield takeEvery(['POST_PENDING', 'GET_PENDING', 'DELETE_PENDING', 'PUT_PENDING',
-    'SIGN_IN_GOOGLE_PENDING', 'SIGN_IN_FACEBOOK_PENDING']
+  yield takeEvery(['POST_PENDING', 'GET_PENDING', 'DELETE_PENDING', 'PUT_PENDING']
     , showPendingDialog);
 }
 
