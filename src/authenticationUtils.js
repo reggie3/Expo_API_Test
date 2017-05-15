@@ -1,6 +1,4 @@
 import appSecrets from './appSecrets';
-import Expo from 'expo';
-import jwtDecode from 'jwt-decode';
 
 export const signInFacebook = () => {
     return new Promise(function (resolve, reject) {
@@ -31,7 +29,6 @@ export const signInFacebook = () => {
             .then((token) => {
                 accessToken = token;
                 return fetch(`https://graph.facebook.com/me?fields=id,name,email,birthday&access_token=${token}`);
-
             })
             .then((response) => {
                 return response.json();
@@ -49,10 +46,10 @@ export const signInFacebook = () => {
                 }));
             })
             .catch(function (error) {
-                console.log('Request failed', error);
                 reject({
                     type: 'error',
-                });
+                    msg: 'Facebook login failed'
+                })
             });
     });
 }
@@ -78,11 +75,11 @@ export const getFacebookProfilePicture = (accessToken, facebookUserID) => {
                 console.log('Request failed', error);
                 reject({
                     type: 'error',
+                    msg: 'failed to get Facebook picture'
                 });
             });
     });
 }
-
 
 export const signInGoogle = () => {
     return new Promise(function (resolve, reject) {
@@ -105,24 +102,23 @@ export const signInGoogle = () => {
                             })
                         }));
                     case 'cancel':
-                        resolve({
+                        reject({
                             type: 'error',
                             msg: 'login canceled'
                         })
                         break;
                     default:
-                        resolve({
+                        reject({
                             type: 'error',
-                            msg: 'login failed'
+                            msg: 'Google login failed'
                         })
                 }
             })
             .catch(function (error) {
-                console.log('Request failed', error);
+                reject({
+                    type: 'error',
+                    msg: 'login failed'
+                })
             });
     });
 }
-
-
-
-
