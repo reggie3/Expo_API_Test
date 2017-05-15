@@ -32,6 +32,7 @@
     "redux-logger": "^3.0.1",
     "redux-promise-middleware": "^4.2.0",
     "redux-saga": "^0.15.3",
-    "render-if": "^0.1.1"
+    "render-if": "^0.1.1",
+    "tcomb-form-native": "^0.6.8"
   }
 }

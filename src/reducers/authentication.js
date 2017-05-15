@@ -8,27 +8,13 @@ export default function authentication(authentication = {}, action) {
         case 'INIT_AUTH':
             return Object.assign({}, authentication, { auth0: action.auth })
 
-        case 'SIGN_UP_PENDING':
-            console.log(`sign up SIGN_UP_PENDING: `, action.payload);
-            return authentication;
-
-        case 'SIGN_UP_FULFILLED':
+        case 'SIGN_UP_AUTH0_FULFILLED':
             console.log(`sign up SIGN_UP_FULFILLED: `, action.payload);
             return authentication;
-
-        case 'SIGN_UP_REJECTED':
+        case 'SIGN_UP_AUTH0_REJECTED':
             console.log(`sign up SIGN_UP_REJECTED: `, action.payload);
-            switch (action.payload.code) {
-                case 'username_exists':
-                    console.log("user name exists");
-                    break;
-            }
             return authentication;
 
-        case 'SIGN_IN_AUTH0_USER':
-            return authentication;
-        case 'SIGN_IN_AUTH0_USER_PENDING':
-            return authentication;
         case 'SIGN_IN_AUTH0_USER_REJECTED':
             debugger
             return authentication;
@@ -139,7 +125,13 @@ export default function authentication(authentication = {}, action) {
             });
 
         case 'LOAD_AUTHENTICATION_FROM_STORAGE_FULFILLED':
-            return action.payload.item;
+            return Object.assign({}, authentication, {
+                credentials: action.payload.item.credentials,
+                signedIn: true,
+                storedAuthenticationChecked: true,
+                type: action.payload.item.type,
+                userInfo: action.payload.item.userInfo
+            })
 
         case 'SET_STORED_AUTHENTICATION_CHECKED':
             return Object.assign({}, authentication, { storedAuthenticationChecked: action.bool });

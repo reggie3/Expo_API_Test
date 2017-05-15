@@ -1,8 +1,8 @@
 const appSecrets = {
     auth0:{
         domain: `reggie3.auth0.com`,
-        clientID: `exewwRgiyRaD39xuBb0ENd7agmXNUT1Z`,
-        connection: `TouryStory-Users`
+        clientID: `P2MUAgy4jntyV4jVjOANsgF27Dw2eB0D`,
+        connection: `Expo-API-Test`
     },
     google: {
         clientID: `495388686744-cnt2sthpo4jd1m0drgc7l567ljliq299.apps.googleusercontent.com`,

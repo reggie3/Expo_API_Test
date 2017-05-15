@@ -125,9 +125,11 @@ export const signInGoogle = () => {
     });
 }
 
-export const signUp = (auth0, newSignupInfo) => {
+/********************* Auth 0 Functions **********************************/
+export const signUpAuth0User = (auth0, newSignupInfo) => {
     // console.log({ newSignupInfo });
     return new Promise(function (resolve, reject) {
+        debugger
         auth0
             .authentication(appSecrets.auth0.clientID)
             .createUser(
@@ -137,7 +139,7 @@ export const signUp = (auth0, newSignupInfo) => {
             appSecrets.auth0.connection
             )
             .then((user) => {
-                ;
+                debugger;
                 console.log(user)
                 resolve({
                     type: 'success',
@@ -176,11 +178,9 @@ export const signInAuth0User = (auth0, signInInfo) => {
 
 export const getAuth0Profile = (accessToken) => {
     return new Promise(function (resolve, reject) {
-        fetch(`https://reggie3.auth0.com/userinfo`, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-            },
-        })
+        auth0
+            .authentication(appSecrets.auth0.clientID)
+            .tokenInfo(accessToken)
             .then((response) => {
                 return response.json();
             })
@@ -190,33 +190,7 @@ export const getAuth0Profile = (accessToken) => {
                     jsonResponse
                 }));
             })
-    });
-}
-
-export const resetAuth0Password = (accessToken) => {
-    return new Promise(function (resolve, reject) {
-        fetch(`https://reggie3.auth0.com/dbconnections/change_password`, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                "client_id": clientID,
-                "email": email,
-                "password": "",
-                "connection": appSecrets.auth0.connection,
-            }
-        })
-            .then((response) => {
-                
-                return response.json();
-            })
-            .then((jsonResponse) => {
-                resolve(resolve({
-                    type: 'success',
-                    jsonResponse
-                }));
-            })
+            .catch(error => console.log(error));
     });
 }
 

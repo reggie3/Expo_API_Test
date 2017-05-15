@@ -36,10 +36,10 @@ let authenticationActions = {
             auth
         }
     },
-    signUp: function (auth0, newSignupInfo) {
+    signUpAuth0User: function (auth0, newSignupInfo) {
         return {
-            type: 'SIGN_UP',
-            payload: authenticationUtils.signUp(auth0, newSignupInfo)
+            type: 'SIGN_UP_AUTH0_USER',
+            payload: authenticationUtils.signUpAuth0User(auth0, newSignupInfo)
         }
     },
     signInAuth0User: function (auth0, signInInfo) {
