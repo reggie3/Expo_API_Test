@@ -2,6 +2,34 @@ import * as authenticationUtils from "../authenticationUtils";
 import * as storageUtils from "../storageUtils";
 
 let authenticationActions = {
+    signInFacebook: function () {
+        return {
+            type: 'SIGN_IN_FACEBOOK',
+            payload: authenticationUtils.signInFacebook()
+
+        }
+    },
+
+    signInGoogle: function () {
+        return {
+            type: 'SIGN_IN_GOOGLE',
+            payload: authenticationUtils.signInGoogle()
+        }
+    },
+
+    setstoredAuthenticationChecked: function (bool) {
+        return {
+            type: 'SET_STORED_AUTHENTICATION_CHECKED',
+            bool
+        }
+    },
+        loadAuthenticationFromStorage: (storage) => {
+        return {
+            type: 'LOAD_AUTHENTICATION_FROM_STORAGE',
+            payload: storageUtils.loadFromStorage(storage, 'authentication')
+        }
+    },
+    /************************** Auth 0 related functions *******************************/
     initAuth: function (auth) {
         return {
             type: 'INIT_AUTH',
@@ -25,50 +53,11 @@ let authenticationActions = {
             type: 'SIGN_OUT_USER'
         }
     },
-    signInSocial: function (auth0, social) {
-        return {
-            type: 'SIGN_IN_SOCIAL',
-            payload: authenticationUtils.signInSocial(auth0, social)
-        }
-    },
     resetPassword: function (auth0, emailAddress) {
         return {
             type: 'RESET_PASSWORD',
             payload: authenticationUtils.signInSocial(auth0, emailAddress)
         }
     },
-    signInFacebook: function () {
-        return {
-            type: 'SIGN_IN_FACEBOOK',
-            payload: authenticationUtils.signInFacebook()
-
-        }
-    },
-
-    signInGoogle: function () {
-        return {
-            type: 'SIGN_IN_GOOGLE',
-            payload: authenticationUtils.signInGoogle()
-        }
-    },
-
-    signInTwitter: function () {
-        return {
-            type: 'SIGN_IN_TWITTER',
-            payload: authenticationUtils.signInTwitter()
-        }
-    },
-    setstoredAuthenticationChecked: function (bool) {
-        return {
-            type: 'SET_STORED_AUTHENTICATION_CHECKED',
-            bool
-        }
-    },
-        loadAuthenticationFromStorage: (storage) => {
-        return {
-            type: 'LOAD_AUTHENTICATION_FROM_STORAGE',
-            payload: storageUtils.loadFromStorage(storage, 'authentication')
-        }
-    }
 }
 export default authenticationActions;

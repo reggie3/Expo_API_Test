@@ -1,127 +1,5 @@
 import appSecrets from './appSecrets';
 import Auth0 from 'react-native-auth0';
-import Expo from 'expo';
-import jwtDecode from 'jwt-decode';
-
-/*export const signUp = (auth0, newSignupInfo) => {
-    // console.log({ newSignupInfo });
-    return new Promise(function (resolve, reject) {
-        auth0
-            .authentication(appSecrets.auth0.clientID)
-            .createUser(
-            newSignupInfo.emailAddress,
-            newSignupInfo.userName,
-            newSignupInfo.password,
-            appSecrets.auth0.connection
-            )
-            .then((user) => {
-                ;
-                console.log(user)
-                resolve({
-                    type: 'success',
-                    auth0,
-                    newSignupInfo
-                })
-            })
-            .catch((error) => {
-                console.log("signUp error: ", error);
-                reject(error);
-            })
-    });
-}
-
-export const signInAuth0User = (auth0, signInInfo) => {
-    return new Promise(function (resolve, reject) {
-        auth0
-            .authentication(appSecrets.auth0.clientID)
-            .login(
-            signInInfo.userName,
-            signInInfo.password,
-            appSecrets.auth0.connection
-            )
-            .then((credentials) => {
-                resolve({
-                    type: 'success',
-                    credentials
-                });
-            })
-            .catch((error) => {
-                console.log("signInAuth0User error: ", error);
-                reject(error);
-            });
-    });
-}
-
-export const getAuth0Profile = (accessToken) => {
-    return new Promise(function (resolve, reject) {
-        fetch(`https://reggie3.auth0.com/userinfo`, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-            },
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((jsonResponse) => {
-                resolve(resolve({
-                    type: 'success',
-                    jsonResponse
-                }));
-            })
-    });
-}
-
-export const resetAuth0Password = (accessToken) => {
-    return new Promise(function (resolve, reject) {
-        fetch(`https://reggie3.auth0.com/dbconnections/change_password`, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                "client_id": clientID,
-                "email": email,
-                "password": "",
-                "connection": appSecrets.auth0.connection,
-            }
-        })
-            .then((response) => {
-                
-                return response.json();
-            })
-            .then((jsonResponse) => {
-                resolve(resolve({
-                    type: 'success',
-                    jsonResponse
-                }));
-            })
-    });
-}
-export const signInSocial = (auth0, social) => {
-    
-    return new Promise(function (resolve, reject) {
-        var webAuth = new Auth0js.WebAuth({
-            domain: 'reggie3.auth0.com',
-            clientID: '4R53x9Kq8dzr55RrwouokMOO25aXxxzd'
-        });
-        webAuth.authorize({
-            connection: social
-        })
-            .then((credentials) => {
-                
-                resolve({
-                    type: 'success',
-                    credentials
-                });
-            })
-            .catch((error) => {
-                console.log("signInAuth0User error: ", error);
-                reject(error);
-            });
-
-    });
-}
-*/
 
 
 export const signInFacebook = () => {
@@ -241,9 +119,104 @@ export const signInGoogle = () => {
             .catch(function (error) {
                 reject({
                     type: 'error',
-                    msg: 'login failed'
+                    msg: 'Google login failed'
                 })
             });
+    });
+}
+
+export const signUp = (auth0, newSignupInfo) => {
+    // console.log({ newSignupInfo });
+    return new Promise(function (resolve, reject) {
+        auth0
+            .authentication(appSecrets.auth0.clientID)
+            .createUser(
+            newSignupInfo.emailAddress,
+            newSignupInfo.userName,
+            newSignupInfo.password,
+            appSecrets.auth0.connection
+            )
+            .then((user) => {
+                ;
+                console.log(user)
+                resolve({
+                    type: 'success',
+                    auth0,
+                    newSignupInfo
+                })
+            })
+            .catch((error) => {
+                console.log("signUp error: ", error);
+                reject(error);
+            })
+    });
+}
+
+export const signInAuth0User = (auth0, signInInfo) => {
+    return new Promise(function (resolve, reject) {
+        auth0
+            .authentication(appSecrets.auth0.clientID)
+            .login(
+            signInInfo.userName,
+            signInInfo.password,
+            appSecrets.auth0.connection
+            )
+            .then((credentials) => {
+                resolve({
+                    type: 'success',
+                    credentials
+                });
+            })
+            .catch((error) => {
+                console.log("signInAuth0User error: ", error);
+                reject(error);
+            });
+    });
+}
+
+export const getAuth0Profile = (accessToken) => {
+    return new Promise(function (resolve, reject) {
+        fetch(`https://reggie3.auth0.com/userinfo`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((jsonResponse) => {
+                resolve(resolve({
+                    type: 'success',
+                    jsonResponse
+                }));
+            })
+    });
+}
+
+export const resetAuth0Password = (accessToken) => {
+    return new Promise(function (resolve, reject) {
+        fetch(`https://reggie3.auth0.com/dbconnections/change_password`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: {
+                "client_id": clientID,
+                "email": email,
+                "password": "",
+                "connection": appSecrets.auth0.connection,
+            }
+        })
+            .then((response) => {
+                
+                return response.json();
+            })
+            .then((jsonResponse) => {
+                resolve(resolve({
+                    type: 'success',
+                    jsonResponse
+                }));
+            })
     });
 }
 
