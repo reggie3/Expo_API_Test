@@ -10,20 +10,20 @@ const createAuthorizationString = (service, userInfo) => {
 /***************************
  * handle error responses to requests.  successful request return a response to the calling promise
  */
-const handleErrors = (responseStatus, resolve) => {
+const handleErrors = (responseStatus) => {
     switch (responseStatus) {
         case 500:
-            resolve({
+            return({
                 responseType: 'error',
                 responseMessage: 'server error'
             });
         case 403:
-            resolve({
+            return({
                 responseType: 'error',
                 responseMessage: 'access forbidden'
             });
         default:
-            resolve({
+            return({
                 responseType: 'error',
                 responseMessage: 'unknown error'
             });
@@ -34,10 +34,9 @@ export const doPost = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
         method: 'POST',
         headers: {
-            // only items in the header that is identified as the 
-            // "Identity Token Source" will make it through the API Gateway
-            // to the authorizer.  createAuthorizationString builds a '||'
-            // delineated string of the data that will be sent to the authorizer
+            // changed the header name to Auth becuase authorizationToken wasn't working
+            // for some reason even if the Custom Authorizer's Identiy token sources was 
+            // set to method.request.header.authorizationToken
             'Auth': createAuthorizationString(service, userInfo)
         },
         body: JSON.stringify({
@@ -47,7 +46,7 @@ export const doPost = (service, userInfo) => {
     })
     .then((response) => {
         if (response.status !== 200) {
-            handleErrors(response.status, resolve)
+            return handleErrors(response.status);
         }
         else {
             return response.text();
@@ -59,7 +58,6 @@ export const doPost = (service, userInfo) => {
             responseMessage: text
         });
     })
-
 }
 export const doGet = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
@@ -75,21 +73,20 @@ export const doGet = (service, userInfo) => {
              'bodyParam2': 'this is the second param'
          })*/
     })
-    .then((response) => {
-        if (response.status !== 200) {
-            handleErrors(response.status, resolve)
-        }
-        else {
-            return response.text();
-        }
-    })
-    .then((text) => {
-        resolve({
-            responseType: 'success',
-            responseMessage: text
-        });
-    })
-
+        .then((response) => {
+            if (response.status !== 200) {
+            return handleErrors(response.status);
+            }
+            else {
+                return response.text();
+            }
+        })
+        .then((text) => {
+            return ({
+                responseType: 'success',
+                responseMessage: text
+            });
+        })
 }
 export const doPut = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
@@ -102,20 +99,20 @@ export const doPut = (service, userInfo) => {
             'bodyParam2': 'this is the second param'
         })
     })
-    .then((response) => {
-        if (response.status !== 200) {
-            handleErrors(response.status, resolve)
-        }
-        else {
-            return response.text();
-        }
-    })
-    .then((response) => {
-        resolve(resolve({
-            responseType: 'success',
-            responseMessage: response
-        }));
-    })
+        .then((response) => {
+            if (response.status !== 200) {
+            return handleErrors(response.status);
+            }
+            else {
+                return response.text();
+            }
+        })
+        .then((response) => {
+            return ({
+                responseType: 'success',
+                responseMessage: response
+            });
+        })
 }
 
 export const doDelete = (service, userInfo) => {
@@ -129,18 +126,18 @@ export const doDelete = (service, userInfo) => {
             'bodyParam2': 'this is the second param'
         })
     })
-    .then((response) => {
-        if (response.status !== 200) {
-            handleErrors(response.status, resolve)
-        }
-        else {
-            return response.text();
-        }
-    })
-    .then((response) => {
-        resolve(resolve({
-            responseType: 'success',
-            responseMessage: response
-        }));
-    })
+        .then((response) => {
+            if (response.status !== 200) {
+            return handleErrors(response.status);
+            }
+            else {
+                return response.text();
+            }
+        })
+        .then((response) => {
+            return ({
+                responseType: 'success',
+                responseMessage: response
+            });
+        })
 }
