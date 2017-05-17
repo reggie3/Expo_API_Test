@@ -79,10 +79,16 @@ export const doGet = (service, userInfo) => {
             return response.text();
         })
         .then((response) => {
-            return ({
-                type: 'success',
-                response
-            });
+            if (response.status !== 200) {
+                // the handle errors function handles HTTP response error codes      
+                handleErrors(response.status, resolve)
+            }
+            else {
+                return ({
+                    type: 'success',
+                    response
+                })
+            }
         })
         .catch((error) => {
             console.log({ error });
@@ -107,10 +113,16 @@ export const doPut = (service, userInfo) => {
             return response.text();
         })
         .then((response) => {
-            resolve(resolve({
-                type: 'success',
-                response
-            }));
+            if (response.status !== 200) {
+                // the handle errors function handles HTTP response error codes      
+                handleErrors(response.status, resolve)
+            }
+            else {
+                return ({
+                    type: 'success',
+                    response
+                })
+            }
         })
         .catch((error) => {
             console.log({ error });
@@ -136,10 +148,16 @@ export const doDelete = (service, userInfo) => {
             return response.text();
         })
         .then((response) => {
-            resolve(resolve({
-                type: 'success',
-                response
-            }));
+            if (response.status !== 200) {
+                // the handle errors function handles HTTP response error codes      
+                handleErrors(response.status, resolve)
+            }
+            else {
+                return ({
+                    type: 'success',
+                    response
+                })
+            }
         })
         .catch((error) => {
             console.log({ error });
