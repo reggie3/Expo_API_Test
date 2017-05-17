@@ -56,14 +56,8 @@ export const doPost = (service, userInfo) => {
                 response
             })
         })
-        .catch((error) => {
-            console.log({ error });
-            return ({
-                type: 'failure',
-                error: error.message
-            });
-        });
 }
+
 export const doGet = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
         method: 'GET',
