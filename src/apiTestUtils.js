@@ -40,7 +40,6 @@ export const doPost = (service, userInfo) => {
     })
 
         .then((response) => {
-            debugger
             if (response.status !== 200) {
                 // the handle errors function handles HTTP response error codes      
                 return handleErrors(response.status)
@@ -50,7 +49,6 @@ export const doPost = (service, userInfo) => {
             }
         })
         .then((response) => {
-            debugger
             return ({
                 type: 'success',
                 response
