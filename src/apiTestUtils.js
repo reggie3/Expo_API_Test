@@ -35,7 +35,7 @@ export const doPost = (service, userInfo) => {
             'authorizationToken': userInfo.accessToken
         },
         body: JSON.stringify({
-            'bodyParam1': `you sent me to the server, and now I'm back`,
+            'bodyParam1': `you sent me to the server, and now I'm back!`,
         })
     })
     .then((response) => {
