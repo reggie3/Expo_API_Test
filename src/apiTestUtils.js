@@ -4,20 +4,32 @@ const handleErrors = (responseStatus) => {
     switch (responseStatus) {
         case 500:
             return ({
-                responseType: 'error',
-                responseMessage: 'server error'
+                type: 'error',
+                response: 'server error'
             });
         case 403:
             return ({
-                responseType: 'error',
-                responseMessage: 'access forbidden'
+                type: 'error',
+                response: 'access forbidden'
             });
         default:
             return ({
-                responseType: 'error',
-                responseMessage: 'unknown error'
+                type: 'error',
+                response: 'unknown error'
             });
     }
+}
+
+const handleResponse = (response) => {
+    // handleError returns a complete response with
+    // with a type property already
+    if (response.hasOwnProperty("type")) {
+        return response;
+    }
+    return ({
+        type: 'success',
+        response
+    })
 }
 
 export const doPost = (service, userInfo) => {
@@ -38,22 +50,23 @@ export const doPost = (service, userInfo) => {
             'bodyParam1': `you sent me to the server, and now I'm back!`,
         })
     })
-
         .then((response) => {
             if (response.status !== 200) {
                 // the handle errors function handles HTTP response error codes      
-                return handleErrors(response.status)
+                let errorMessage = handleErrors(response.status);
+                return errorMessage;
             }
             else {
                 return response.text();
             }
         })
         .then((response) => {
-            return ({
-                type: 'success',
-                response
-            })
+            return handleResponse(response);
         })
+        .catch(function (err) {   
+            console.log("error: ", err);
+        })
+
 }
 
 export const doGet = (service, userInfo) => {
@@ -77,14 +90,13 @@ export const doGet = (service, userInfo) => {
             }
             else {
                 return response.text();
-
             }
         })
         .then((response) => {
-            return ({
-                type: 'success',
-                response
-            })
+            return handleResponse(response);
+        })
+        .catch(function (err) {  
+            console.log("error: ", err);
         })
 }
 export const doPut = (service, userInfo) => {
@@ -98,7 +110,6 @@ export const doPut = (service, userInfo) => {
             'bodyParam2': 'this is the second param'
         })
     })
-
         .then((response) => {
             if (response.status !== 200) {
                 // the handle errors function handles HTTP response error codes      
@@ -109,12 +120,11 @@ export const doPut = (service, userInfo) => {
             }
         })
         .then((response) => {
-            return ({
-                type: 'success',
-                response
-            })
+            return handleResponse(response);
         })
-
+        .catch(function (err) {   
+            console.log("error: ", err);
+        })
 }
 
 export const doDelete = (service, userInfo) => {
@@ -139,9 +149,9 @@ export const doDelete = (service, userInfo) => {
             }
         })
         .then((response) => {
-            return ({
-                type: 'success',
-                response
-            })
+            return handleResponse(response);
+        })
+        .catch(function (err) {
+            console.log("error: ", err);
         })
 }

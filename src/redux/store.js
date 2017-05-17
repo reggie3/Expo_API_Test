@@ -64,5 +64,4 @@ export const store = createStore(
 sagaMiddleware.run(MySagas.sagaShowPendingDialog);
 sagaMiddleware.run(MySagas.sagaHandleAPISuccess);
 sagaMiddleware.run(MySagas.sagaHandleAPIRejected);
-sagaMiddleware.run(MySagas.sagaGetFacebookPictureAfterLogin);
 

@@ -7,21 +7,8 @@ import {
 import { connect } from 'react-redux';
 import { globalStyles } from '../globals/styles';
 import actions from '../actions/actions';
-import FaceBookSignInButton from '../Components/FacebookSignInButton';
-import GoogleSignInButton from '../Components/GoogleSignInButton';
 
 class ApiTestingComponent extends Component {
-
-  signInSocial(social) {
-    switch (social) {
-      case 'facebook':
-        this.props.dispatch(actions.authenticationActions.signInFacebook());
-        break;
-      case 'google':
-        this.props.dispatch(actions.authenticationActions.signInGoogle());
-        break;
-    }
-  }
 
   post() {
     this.props.dispatch(actions.apiTestActions.doPost(
@@ -58,19 +45,7 @@ class ApiTestingComponent extends Component {
         padding: 10,
         backgroundColor: 'white'
       }}>
-        <View style={{
-          flex: 1,
-          justifyContent: 'space-around',
-          flexDirection: 'row',
-          alignItems: 'center'
-        }}>
-          <FaceBookSignInButton
-            type='small'
-            onPress={this.signInSocial.bind(this, 'facebook')} />
-          <GoogleSignInButton
-            type='small'
-            onPress={this.signInSocial.bind(this, 'google')} />
-        </View>
+        
         <View style={{
           flex: 2,
           justifyContent: 'space-around',

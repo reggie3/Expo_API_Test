@@ -128,20 +128,3 @@ export function* sagaHandleAPIRejected() {
     , handleAPIRejected);
 }
 
-function* getFacebookPictureAfterLogin(action) {
-
-  if (action.payload.type === 'success') {
-    console.log({ action })
-    yield put({
-      type: "GET_FACEBOOK_PROFILE_PICTURE",
-      payload: authenticationUtils.getFacebookProfilePicture(
-        action.payload.credentials.accessToken,
-        action.payload.credentials.id
-      )
-
-    });
-  }
-}
-export function* sagaGetFacebookPictureAfterLogin() {
-  yield takeEvery(['SIGN_IN_FACEBOOK_FULFILLED'], getFacebookPictureAfterLogin);
-}
