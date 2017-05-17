@@ -10,20 +10,20 @@ const createAuthorizationString = (service, userInfo) => {
 /***************************
  * handle error responses to requests.  successful request return a response to the calling promise
  */
-const handleErrors = (responseStatus, resolve) => {
+const handleErrors = (responseStatus) => {
     switch (responseStatus) {
         case 500:
-            resolve({
+            return({
                 responseType: 'error',
                 responseMessage: 'server error'
             });
         case 403:
-            resolve({
+            return({
                 responseType: 'error',
                 responseMessage: 'access forbidden'
             });
         default:
-            resolve({
+            return({
                 responseType: 'error',
                 responseMessage: 'unknown error'
             });
@@ -46,7 +46,7 @@ export const doPost = (service, userInfo) => {
     })
     .then((response) => {
         if (response.status !== 200) {
-            handleErrors(response.status, resolve)
+            return handleErrors(response.status);
         }
         else {
             return response.text();
@@ -75,7 +75,7 @@ export const doGet = (service, userInfo) => {
     })
         .then((response) => {
             if (response.status !== 200) {
-                handleErrors(response.status, resolve)
+            return handleErrors(response.status);
             }
             else {
                 return response.text();
@@ -101,7 +101,7 @@ export const doPut = (service, userInfo) => {
     })
         .then((response) => {
             if (response.status !== 200) {
-                handleErrors(response.status, resolve)
+            return handleErrors(response.status);
             }
             else {
                 return response.text();
@@ -128,7 +128,7 @@ export const doDelete = (service, userInfo) => {
     })
         .then((response) => {
             if (response.status !== 200) {
-                handleErrors(response.status, resolve)
+            return handleErrors(response.status);
             }
             else {
                 return response.text();
