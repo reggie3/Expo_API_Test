@@ -43,9 +43,6 @@ export const doPost = (service, userInfo) => {
     */
     return fetch(appSecrets.aws.apiURL, {
         method: 'POST',
-        headers: {
-            'authorizationToken': userInfo.accessToken
-        },
         body: JSON.stringify({
             'bodyParam1': `you sent me to the server, and now I'm back!`,
         })
@@ -72,9 +69,6 @@ export const doPost = (service, userInfo) => {
 export const doGet = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
         method: 'GET',
-        headers: {
-            'authorizationToken': userInfo.accessToken
-        },
         /* 
         *** GET methods don't take a body parameter.  Uncommenting the lines below
         will cause an error ***/
@@ -102,9 +96,6 @@ export const doGet = (service, userInfo) => {
 export const doPut = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
         method: 'PUT',
-        headers: {
-            'authorizationToken': userInfo.accessToken
-        },
         body: JSON.stringify({
             'bodyParam1': 'this is the first param',
             'bodyParam2': 'this is the second param'
@@ -130,9 +121,6 @@ export const doPut = (service, userInfo) => {
 export const doDelete = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
         method: 'DELETE',
-        headers: {
-            'authorizationToken': userInfo.accessToken
-        },
         body: JSON.stringify({
             'bodyParam1': 'this is the first param',
             'bodyParam2': 'this is the second param'
