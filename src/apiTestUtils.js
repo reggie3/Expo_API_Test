@@ -70,10 +70,10 @@ export const doGet = (service, userInfo) => {
         /* 
         *** GET methods don't take a body parameter.  Uncommenting the lines below
         will cause an error ***/
-        body: JSON.stringify({
+        /*body: JSON.stringify({
             'bodyParam1': 'this is the first param',
             'bodyParam2': 'this is the second param'
-        })
+        })*/
     })
         .then((response) => {
             return response.text();
