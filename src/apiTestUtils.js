@@ -38,28 +38,31 @@ export const doPost = (service, userInfo) => {
             'bodyParam1': `you sent me to the server, and now I'm back!`,
         })
     })
-    .then((response) => {
-        return response.text();
-    })
-    .then((response) => {
-        if (response.status !== 200) {
-            // the handle errors function handles HTTP response error codes      
-            return handleErrors(response.status)
-        }
-        else {
+
+        .then((response) => {
+            debugger
+            if (response.status !== 200) {
+                // the handle errors function handles HTTP response error codes      
+                return handleErrors(response.status)
+            }
+            else {
+                return response.text();
+            }
+        })
+        .then((response) => {
+            debugger
             return ({
                 type: 'success',
                 response
             })
-        }
-    })
-    .catch((error) => {
-        console.log({ error });
-        return ({
-            type: 'failure',
-            error: error.message
+        })
+        .catch((error) => {
+            console.log({ error });
+            return ({
+                type: 'failure',
+                error: error.message
+            });
         });
-    });
 }
 export const doGet = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
@@ -75,28 +78,22 @@ export const doGet = (service, userInfo) => {
             'bodyParam2': 'this is the second param'
         })*/
     })
-    .then((response) => {
-        return response.text();
-    })
-    .then((response) => {
-        if (response.status !== 200) {
-            // the handle errors function handles HTTP response error codes      
-            return handleErrors(response.status)
-        }
-        else {
+        .then((response) => {
+            if (response.status !== 200) {
+                // the handle errors function handles HTTP response error codes      
+                return handleErrors(response.status)
+            }
+            else {
+                return response.text();
+
+            }
+        })
+        .then((response) => {
             return ({
                 type: 'success',
                 response
             })
-        }
-    })
-    .catch((error) => {
-        console.log({ error });
-        return ({
-            type: 'failure',
-            error: error
-        });
-    });
+        })
 }
 export const doPut = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
@@ -109,28 +106,23 @@ export const doPut = (service, userInfo) => {
             'bodyParam2': 'this is the second param'
         })
     })
-    .then((response) => {
-        return response.text();
-    })
-    .then((response) => {
-        if (response.status !== 200) {
-            // the handle errors function handles HTTP response error codes      
-            return handleErrors(response.status)
-        }
-        else {
+
+        .then((response) => {
+            if (response.status !== 200) {
+                // the handle errors function handles HTTP response error codes      
+                return handleErrors(response.status)
+            }
+            else {
+                return response.text();
+            }
+        })
+        .then((response) => {
             return ({
                 type: 'success',
                 response
             })
-        }
-    })
-    .catch((error) => {
-        console.log({ error });
-        return ({
-            type: 'failure',
-            error: error
-        });
-    })
+        })
+
 }
 
 export const doDelete = (service, userInfo) => {
@@ -144,26 +136,20 @@ export const doDelete = (service, userInfo) => {
             'bodyParam2': 'this is the second param'
         })
     })
-    .then((response) => {
-        return response.text();
-    })
-    .then((response) => {
-        if (response.status !== 200) {
-            // the handle errors function handles HTTP response error codes      
-            return handleErrors(response.status)
-        }
-        else {
+
+        .then((response) => {
+            if (response.status !== 200) {
+                // the handle errors function handles HTTP response error codes      
+                return handleErrors(response.status)
+            }
+            else {
+                return response.text();
+            }
+        })
+        .then((response) => {
             return ({
                 type: 'success',
                 response
             })
-        }
-    })
-    .catch((error) => {
-        console.log({ error });
-        return ({
-            type: 'failure',
-            error: error.message
-        });
-    });
+        })
 }
