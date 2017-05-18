@@ -29,7 +29,7 @@ export default FaceBookSignInButton = (props) => {
 
     return renderable
 }
-const backgroundColor =  "#3b5998";
+const backgroundColor = "#3b5998";
 const styles = StyleSheet.create(Object.assign({}, globalStyles, {
     buttonContainer: {
         flex: 1,
@@ -57,5 +57,4 @@ const styles = StyleSheet.create(Object.assign({}, globalStyles, {
         marginLeft: 10,
         marginTop: 2,
     }
-}
-));
+}));

@@ -1,4 +1,5 @@
 import appSecrets from './appSecrets';
+import Expo from 'expo';
 
 export const signInFacebook = () => {
     return new Promise(function (resolve, reject) {
@@ -40,10 +41,10 @@ export const signInFacebook = () => {
                         type: 'error',
                     });
                 }
-                resolve(resolve({
+                resolve({
                     type: 'success',
                     credentials: Object.assign({}, facebookJSONResponse, { accessToken })
-                }));
+                });
             })
             .catch(function (error) {
                 reject({
@@ -66,10 +67,10 @@ export const getFacebookProfilePicture = (accessToken, facebookUserID) => {
                         type: 'error',
                     });
                 }
-                resolve(resolve({
+                resolve({
                     type: 'success',
                     pictureData: json
-                }));
+                });
             })
             .catch(function (error) {
                 console.log('Request failed', error);
@@ -92,7 +93,7 @@ export const signInGoogle = () => {
             .then((response) => {
                 switch (response.type) {
                     case 'success':
-                        resolve(resolve({
+                        resolve({
                             type: 'success',
                             credentials: Object.assign({}, response.user, {
                                 accessToken: response.accessToken,
@@ -100,7 +101,7 @@ export const signInGoogle = () => {
                                 serverAuthCode: response.serverAuthCode,
                                 refreshToken: response.refreshToken
                             })
-                        }));
+                        });
                     case 'cancel':
                         reject({
                             type: 'error',

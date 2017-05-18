@@ -58,6 +58,7 @@ export const doPost = (service, userInfo) => {
     })
     .then((response) => {
         if (response.status !== 200) {
+            debugger;
             return handleErrors(response.status);
         }
         else {
