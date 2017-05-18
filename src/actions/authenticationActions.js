@@ -1,6 +1,11 @@
 import * as authenticationUtils from "../authenticationUtils";
 
 let authenticationActions = {
+        signOutUser: function () {
+        return {
+            type: 'SIGN_OUT_USER'
+        }
+    },
     signInFacebook: function () {
         return {
             type: 'SIGN_IN_FACEBOOK',
