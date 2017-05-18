@@ -39,8 +39,7 @@ export const saveToStorage = (storage, key, data) => {
 }
 
 export const loadFromStorage = (storage, key) => {
-    return new Promise(function (resolve, reject) {
-        storage.load({
+    return storage.load({
             key,
 
             // autoSync(default true) means if data not found or expired,
@@ -63,7 +62,7 @@ export const loadFromStorage = (storage, key) => {
         }).then(ret => {
             // found data go to then()
             console.log(ret)
-            resolve({
+            return({
                 type: 'success',
                 item: ret
             })
@@ -71,12 +70,11 @@ export const loadFromStorage = (storage, key) => {
             // any exception including data not found 
             // goes to catch()
             console.log(err.message);
-            reject({
+            return({
                 type: 'error',
                 error: err
             })
         })
-    });
 }
 
 export const removeFromStorage = (storage, key) => {
