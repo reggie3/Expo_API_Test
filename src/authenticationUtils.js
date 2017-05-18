@@ -1,4 +1,5 @@
 import appSecrets from './appSecrets';
+import Expo from 'expo';
 
 export const signInFacebook = () => {
     return new Promise(function (resolve, reject) {
@@ -36,7 +37,7 @@ export const signInFacebook = () => {
             .then((facebookJSONResponse) => {
                 console.log({ facebookJSONResponse });
                 if (facebookJSONResponse.hasOwnProperty('error')) {
-                    reject({
+                    resolve({
                         type: 'error',
                     });
                 }
@@ -46,7 +47,7 @@ export const signInFacebook = () => {
                 }));
             })
             .catch(function (error) {
-                reject({
+                resolve({
                     type: 'error',
                     msg: 'Facebook login failed'
                 })
@@ -62,7 +63,7 @@ export const getFacebookProfilePicture = (accessToken, facebookUserID) => {
             })
             .then((json) => {
                 if (json.hasOwnProperty('error')) {
-                    reject({
+                    resolve({
                         type: 'error',
                     });
                 }
@@ -73,7 +74,7 @@ export const getFacebookProfilePicture = (accessToken, facebookUserID) => {
             })
             .catch(function (error) {
                 console.log('Request failed', error);
-                reject({
+                resolve({
                     type: 'error',
                     msg: 'failed to get Facebook picture'
                 });
@@ -102,20 +103,20 @@ export const signInGoogle = () => {
                             })
                         }));
                     case 'cancel':
-                        reject({
+                        resolve({
                             type: 'error',
                             msg: 'login canceled'
                         })
                         break;
                     default:
-                        reject({
+                        resolve({
                             type: 'error',
                             msg: 'Google login failed'
                         })
                 }
             })
             .catch(function (error) {
-                reject({
+                resolve({
                     type: 'error',
                     msg: 'login failed'
                 })

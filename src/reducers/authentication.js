@@ -83,7 +83,20 @@ export default function authentication(authentication = {}, action) {
             });
 
         case 'LOAD_AUTHENTICATION_FROM_STORAGE_FULFILLED':
-            return action.payload.item;
+            if (action.payload.type !== 'error') {
+                return Object.assign({}, authentication, {
+                    credentials: action.payload.item.credentials,
+                    signedIn: true,
+                    storedAuthenticationChecked: true,
+                    type: action.payload.item.type,
+                    userInfo: action.payload.item.userInfo
+                })
+            }
+            else{
+                return Object.assign({}, authentication, {
+                    storedAuthenticationChecked: true,
+                })
+            }
 
         case 'SET_STORED_AUTHENTICATION_CHECKED':
             return Object.assign({}, authentication, { storedAuthenticationChecked: action.bool });
