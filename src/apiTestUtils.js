@@ -68,7 +68,7 @@ export const doPost = (service, userInfo) => {
             return handleResponse(response);
         })
         .catch(function (err) {   
-            console.log("error: ", err);
+            console.log("Error: ", err);
         })
 }
 export const doGet = (service, userInfo) => {

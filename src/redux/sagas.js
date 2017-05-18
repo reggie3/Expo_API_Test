@@ -82,7 +82,7 @@ function* handleAPISuccess(action) {
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
       responseType: action.payload.type,
-      responseMessage: action.payload.reponse
+      responseMessage: action.payload.response
     });
   } catch (e) {
     yield console.log('ERROR: showSuccessDialog');
@@ -151,8 +151,8 @@ function* handleAPIRejected(action) {
     });
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
-      responseType: action.payload.responseType,
-      responseMessage: action.payload.responseMessage
+      responseType: action.payload.type,
+      responseMessage: action.payload.response
     });
   } catch (e) {
     yield console.log('ERROR: showRejectedDialog');
