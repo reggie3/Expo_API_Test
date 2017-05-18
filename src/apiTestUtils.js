@@ -10,170 +10,147 @@ const createAuthorizationString = (service, userInfo) => {
 /***************************
  * handle error responses to requests.  successful request return a response to the calling promise
  */
-const handleErrors = (responseStatus, resolve) => {
+const handleErrors = (responseStatus) => {
     switch (responseStatus) {
         case 500:
-            resolve({
-                responseType: 'error',
-                responseMessage: 'server error'
+            return ({
+                type: 'error',
+                response: 'server error'
             });
         case 403:
-            resolve({
-                responseType: 'error',
-                responseMessage: 'access forbidden'
+            return ({
+                type: 'error',
+                response: 'access forbidden'
             });
         default:
-            resolve({
-                responseType: 'error',
-                responseMessage: 'unknown error'
+            return ({
+                type: 'error',
+                response: 'unknown error'
             });
     }
 }
 
+const handleResponse = (response) => {
+    // handleError returns a complete response with
+    // with a type property already
+    if (response.hasOwnProperty("type")) {
+        return response;
+    }
+    return ({
+        type: 'success',
+        response
+    })
+}
+
 export const doPost = (service, userInfo) => {
-    return new Promise(function (resolve, reject) {
-        fetch(appSecrets.aws.apiURL, {
-            method: 'POST',
-            headers: {
-                // changed the header name to Auth becuase authorizationToken wasn't working
-                // for some reason even if the Custom Authorizer's Identiy token sources was 
-                // set to method.request.header.authorizationToken
-                'Auth': createAuthorizationString(service, userInfo)
-            },
-            body: JSON.stringify({
-                'bodyParam1': 'this is the first param',
-                'bodyParam2': 'this is the second param'
-            })
+    return fetch(appSecrets.aws.apiURL, {
+        method: 'POST',
+        headers: {
+            // changed the header name to Auth becuase authorizationToken wasn't working
+            // for some reason even if the Custom Authorizer's Identiy token sources was 
+            // set to method.request.header.authorizationToken
+            'Auth': createAuthorizationString(service, userInfo)
+        },
+        body: JSON.stringify({
+            'bodyParam1': 'this is the first param',
+            'bodyParam2': 'this is the second param'
         })
-            .then((response) => {
-                if (response.status !== 200) {
-                    handleErrors(response.status, resolve)
-                }
-                else {
-                    return response.text();
-                }
-            })
-            .then((text) => {
-                resolve({
-                    responseType: 'success',
-                    responseMessage: text
-                });
-            })
-            .catch((error) => {
-                console.log({ error });
-                reject({
-                    responseType: 'error',
-                    responseMessage: error.message
-                });
-            })
-    });
+    })
+    .then((response) => {
+        if (response.status !== 200) {
+            debugger;
+            return handleErrors(response.status);
+        }
+        else {
+            return response.text();
+        }
+    })
+    .then((response) => {
+            return handleResponse(response);
+        })
+        .catch(function (err) {   
+            console.log("Error: ", err);
+        })
 }
 export const doGet = (service, userInfo) => {
-    return new Promise(function (resolve, reject) {
-        fetch(appSecrets.aws.apiURL, {
-            method: 'GET',
-            headers: {
-                'Auth': createAuthorizationString(service, userInfo)
-            },
-            /* 
-            *** GET methods don't take a body parameter.  Uncommenting the lines below
-            will cause an error ***
-             body: JSON.stringify({
-                 'bodyParam1': 'this is the first param',
-                 'bodyParam2': 'this is the second param'
-             })*/
+    return fetch(appSecrets.aws.apiURL, {
+        method: 'GET',
+        headers: {
+            'Auth': createAuthorizationString(service, userInfo)
+        },
+        /* 
+        *** GET methods don't take a body parameter.  Uncommenting the lines below
+        will cause an error ***
+         body: JSON.stringify({
+             'bodyParam1': 'this is the first param',
+             'bodyParam2': 'this is the second param'
+         })*/
+    })
+        .then((response) => {
+            if (response.status !== 200) {
+            return handleErrors(response.status);
+            }
+            else {
+                return response.text();
+            }
         })
-            .then((response) => {
-                if (response.status !== 200) {
-                    handleErrors(response.status, resolve)
-                }
-                else {
-                    return response.text();
-                }
-            })
-             .then((text) => {
-                resolve({
-                    responseType: 'success',
-                    responseMessage: text
-                });
-            })
-            .catch((error) => {
-                console.log({ error });
-                reject({
-                    responseType: 'failure',
-                    error: error.message
-                });
-            })
-    });
+        .then((response) => {
+            return handleResponse(response);
+        })
+        .catch(function (err) {   
+            console.log("error: ", err);
+        })
 }
 export const doPut = (service, userInfo) => {
-    return new Promise(function (resolve, reject) {
-        fetch(appSecrets.aws.apiURL, {
-            method: 'PUT',
-            headers: {
-                'Auth': createAuthorizationString(service, userInfo)
-            },
-            body: JSON.stringify({
-                'bodyParam1': 'this is the first param',
-                'bodyParam2': 'this is the second param'
-            })
+    return fetch(appSecrets.aws.apiURL, {
+        method: 'PUT',
+        headers: {
+            'Auth': createAuthorizationString(service, userInfo)
+        },
+        body: JSON.stringify({
+            'bodyParam1': 'this is the first param',
+            'bodyParam2': 'this is the second param'
         })
-            .then((response) => {
-                if (response.status !== 200) {
-                    handleErrors(response.status, resolve)
-                }
-                else {
-                    return response.text();
-                }
-            })
-            .then((response) => {
-                resolve(resolve({
-                    responseType: 'success',
-                    responseMessage: response
-                }));
-            })
-            .catch((error) => {
-                console.log({ error });
-                reject({
-                    responseType: 'failure',
-                    error: error.message
-                });
-            })
-    });
+    })
+        .then((response) => {
+            if (response.status !== 200) {
+            return handleErrors(response.status);
+            }
+            else {
+                return response.text();
+            }
+        })
+        .then((response) => {
+            return handleResponse(response);
+        })
+        .catch(function (err) {   
+            console.log("error: ", err);
+        })
 }
 
 export const doDelete = (service, userInfo) => {
-    return new Promise(function (resolve, reject) {
-        fetch(appSecrets.aws.apiURL, {
-            method: 'DELETE',
-            headers: {
-                'Auth': createAuthorizationString(service, userInfo)
-            },
-            body: JSON.stringify({
-                'bodyParam1': 'this is the first param',
-                'bodyParam2': 'this is the second param'
-            })
+    return fetch(appSecrets.aws.apiURL, {
+        method: 'DELETE',
+        headers: {
+            'Auth': createAuthorizationString(service, userInfo)
+        },
+        body: JSON.stringify({
+            'bodyParam1': 'this is the first param',
+            'bodyParam2': 'this is the second param'
         })
-            .then((response) => {
-                if (response.status !== 200) {
-                    handleErrors(response.status, resolve)
-                }
-                else {
-                    return response.text();
-                }
-            })
-            .then((response) => {
-                resolve(resolve({
-                    responseType: 'success',
-                    responseMessage: response
-                }));
-            })
-            .catch((error) => {
-                console.log({ error });
-                reject({
-                    responseType: 'failure',
-                    error: error.message
-                });
-            })
-    });
+    })
+        .then((response) => {
+            if (response.status !== 200) {
+            return handleErrors(response.status);
+            }
+            else {
+                return response.text();
+            }
+        })
+        .then((response) => {
+            return handleResponse(response);
+        })
+        .catch(function (err) {   
+            console.log("error: ", err);
+        })
 }
