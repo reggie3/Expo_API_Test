@@ -66,6 +66,7 @@ export const doPost = (service, userInfo) => {
         }
     })
     .then((response) => {
+            debugger
             return handleResponse(response);
         })
         .catch(function (err) {   

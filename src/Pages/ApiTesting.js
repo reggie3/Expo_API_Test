@@ -32,12 +32,10 @@ const formOptions = {
 };
 
 class ApiTestingComponent extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       formValues: {
-        //userName: "" + Math.floor(Math.random() * (max - min)) + min,
         userName: "test",
         password: "password",
       }
