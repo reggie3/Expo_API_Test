@@ -13,21 +13,33 @@ const createAuthorizationString = (service, userInfo) => {
 const handleErrors = (responseStatus) => {
     switch (responseStatus) {
         case 500:
-            return({
-                responseType: 'error',
-                responseMessage: 'server error'
+            return ({
+                type: 'error',
+                response: 'server error'
             });
         case 403:
-            return({
-                responseType: 'error',
-                responseMessage: 'access forbidden'
+            return ({
+                type: 'error',
+                response: 'access forbidden'
             });
         default:
-            return({
-                responseType: 'error',
-                responseMessage: 'unknown error'
+            return ({
+                type: 'error',
+                response: 'unknown error'
             });
     }
+}
+
+const handleResponse = (response) => {
+    // handleError returns a complete response with
+    // with a type property already
+    if (response.hasOwnProperty("type")) {
+        return response;
+    }
+    return ({
+        type: 'success',
+        response
+    })
 }
 
 export const doPost = (service, userInfo) => {
@@ -52,12 +64,12 @@ export const doPost = (service, userInfo) => {
             return response.text();
         }
     })
-    .then((text) => {
-        return ({
-            responseType: 'success',
-            responseMessage: text
-        });
-    })
+    .then((response) => {
+            return handleResponse(response);
+        })
+        .catch(function (err) {   
+            console.log("error: ", err);
+        })
 }
 export const doGet = (service, userInfo) => {
     return fetch(appSecrets.aws.apiURL, {
@@ -81,11 +93,11 @@ export const doGet = (service, userInfo) => {
                 return response.text();
             }
         })
-        .then((text) => {
-            return ({
-                responseType: 'success',
-                responseMessage: text
-            });
+        .then((response) => {
+            return handleResponse(response);
+        })
+        .catch(function (err) {   
+            console.log("error: ", err);
         })
 }
 export const doPut = (service, userInfo) => {
@@ -108,10 +120,10 @@ export const doPut = (service, userInfo) => {
             }
         })
         .then((response) => {
-            return ({
-                responseType: 'success',
-                responseMessage: response
-            });
+            return handleResponse(response);
+        })
+        .catch(function (err) {   
+            console.log("error: ", err);
         })
 }
 
@@ -135,9 +147,9 @@ export const doDelete = (service, userInfo) => {
             }
         })
         .then((response) => {
-            return ({
-                responseType: 'success',
-                responseMessage: response
-            });
+            return handleResponse(response);
+        })
+        .catch(function (err) {   
+            console.log("error: ", err);
         })
 }
