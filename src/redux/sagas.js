@@ -33,7 +33,12 @@ function* showPendingDialog(action) {
       case 'SIGN_IN_FACEBOOK_PENDING':
         message = "signing in with Facebook";
         break;
-
+      case 'SIGN_IN_AUTH0_USER_PENDING':
+        message = "signing in with Auth0";
+        break;
+      case 'SIGN_UP_AUTH0_USER_PENDING':
+        message = "creating account with Auth0";
+        break;
     }
     yield put({
       type: "SHOW_PENDING_DIALOG",
@@ -46,7 +51,8 @@ function* showPendingDialog(action) {
 
 export function* sagaShowPendingDialog() {
   yield takeEvery(['POST_PENDING', 'GET_PENDING', 'DELETE_PENDING', 'PUT_PENDING',
-    'SIGN_IN_GOOGLE_PENDING', 'SIGN_IN_FACEBOOK_PENDING']
+    'SIGN_IN_GOOGLE_PENDING', 'SIGN_IN_FACEBOOK_PENDING',
+    'SIGN_IN_AUTH0_USER_PENDING', 'SIGN_UP_AUTH0_USER_PENDING']
     , showPendingDialog);
 }
 
@@ -72,21 +78,32 @@ function* handleAPISuccess(action) {
         message = "successful put";
         break;
       case 'SIGN_IN_GOOGLE_FULFILLED':
-        message = "successful sign in with Google";
+        message = `${action.payload.type} sign in with Google`;
         break;
       case 'SIGN_IN_FACEBOOK_FULFILLED':
-        message = "successful sign in with Facebook";
+        message = `${action.payload.type} sign in with Facebook`;
+        break;
+      case 'SIGN_IN_AUTH0_USER_FULFILLED':
+        message = `${action.payload.type} sign in with Auth0`;
         break;
 
     }
     yield put({
       type: "CLOSE_PENDING_DIALOG",
     });
-    yield put({
-      type: "SHOW_SUCCESS_DIALOG",
-      message: message
-    });
-    
+    if (action.payload.type === 'success') {
+      yield put({
+        type: "SHOW_SUCCESS_DIALOG",
+        message: message
+      });
+    }
+    else {
+      yield put({
+        type: "SHOW_ERROR_DIALOG",
+        message: message
+      });
+    }
+
     yield put({
       type: 'UPDATE_RESPONSE_MESSAGE',
       responseType: action.payload.type,
@@ -98,7 +115,7 @@ function* handleAPISuccess(action) {
 }
 
 export function* sagaHandleAPISuccess() {
-  yield takeEvery(['POST_FULFILLED', 'GET_FULFILLED', 'DELETE_FULFILLED', 'PUT_FULFILLED']
+  yield takeEvery(['SIGN_IN_AUTH0_USER_FULFILLED', 'POST_FULFILLED', 'GET_FULFILLED', 'DELETE_FULFILLED', 'PUT_FULFILLED']
     , handleAPISuccess);
 }
 
@@ -118,7 +135,8 @@ function* handleLoginCompleted(action) {
   }
 }
 export function* sagaHandleLoginCompleted() {
-  yield takeEvery(['SIGN_IN_GOOGLE_FULFILLED', 'SIGN_IN_FACEBOOK_FULFILLED']
+  yield takeEvery(['SIGN_IN_GOOGLE_FULFILLED', 'SIGN_IN_FACEBOOK_FULFILLED',
+    'SIGN_IN_AUTH0_USER_FULFILLED']
     , handleLoginCompleted);
 }
 
@@ -149,12 +167,19 @@ function* handleAPIRejected(action) {
       case 'SIGN_IN_FACEBOOK_REJECTED':
         message = "failed to sign in with Facebook";
         break;
+      case 'SIGN_IN_AUTH0_USER_REJECTED':
+        message = "failed to sign in with Auth0";
+        break;
+      case 'SIGN_UP_AUTH0_USER_REJECTED':
+        message = "failed to create Auth0 account";
+        break;
+
     }
     yield put({
       type: "CLOSE_PENDING_DIALOG",
     });
     yield put({
-      type: "SHOW_REJECTED_DIALOG",
+      type: "SHOW_ERROR_DIALOG",
       message: message
     });
     yield put({
@@ -169,7 +194,8 @@ function* handleAPIRejected(action) {
 
 export function* sagaHandleAPIRejected() {
   yield takeEvery(['POST_REJECTED', 'GET_REJECTED', 'DELETE_REJECTED', 'PUT_REJECTED',
-    'SIGN_IN_GOOGLE_REJECTED', 'SIGN_IN_FACEBOOK_REJECTED']
+    'SIGN_IN_GOOGLE_REJECTED', 'SIGN_IN_FACEBOOK_REJECTED',
+    'SIGN_IN_AUTH0_USER_REJECTED', 'SIGN_UP_AUTH0_USER_REJECTED']
     , handleAPIRejected);
 }
 
@@ -191,13 +217,61 @@ export function* sagaGetFacebookPictureAfterLogin() {
   yield takeEvery(['SIGN_IN_FACEBOOK_FULFILLED'], getFacebookPictureAfterLogin);
 }
 
-function* handleStorageInitialization(action){
-    try {
-    console.log({action});
+function* handleStorageInitialization(action) {
+  try {
+    console.log({ action });
   } catch (e) {
     yield console.log('ERROR: showRejectedDialog');
   }
 }
-export function* sagaHandleStorageInitialization(){
+export function* sagaHandleStorageInitialization() {
   yield takeEvery(['SAVE_STORAGE'], handleStorageInitialization);
 }
+
+function* handleSignInAuth0UserAfterSignUp(action) {
+  try {
+    if (action.payload.type === 'success') {
+      console.log({ action })
+      yield put({
+        type: "SIGN_IN_AUTH0_USER",
+        payload: authenticationUtils.signInAuth0User({
+          username: action.payload.newSignupInfo.username,
+          password: action.payload.newSignupInfo.password
+        })
+      });
+    }
+    else {
+      yield put({
+        type: "SIGN_UP_AUTH0_USER_REJECTED",
+        payload: {
+          type: action.payload.type,
+          error: action.payload.error
+        }
+      })
+    }
+  } catch (e) {
+    yield console.log('ERROR: showRejectedDialog');
+  }
+}
+export function* sagaHandleSignInAuth0UserAfterSignUp() {
+  yield takeEvery(['SIGN_UP_AUTH0_USER_FULFILLED'], handleSignInAuth0UserAfterSignUp);
+}
+
+function* getAuth0ProfileAfterUserSignIn(action) {
+  try {
+    if (action.payload.type === 'success') {
+      yield put({
+        type: "GET_AUTH0_USER_INFO",
+        payload: authenticationUtils.getAuth0Profile(
+          action.payload.credentials.access_token
+        )
+      });
+    }
+  } catch (e) {
+    yield console.log('ERROR: showRejectedDialog');
+  }
+}
+export function* sagaGetAuth0ProfileAfterUserSignIn() {
+  yield takeEvery(['SIGN_IN_AUTH0_USER_FULFILLED'], getAuth0ProfileAfterUserSignIn);
+}
+

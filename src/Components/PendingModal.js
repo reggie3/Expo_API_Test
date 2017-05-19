@@ -4,9 +4,7 @@ import { globalStyles } from '../globals/styles';
 
 
 export default PendingModal = (props) => {
-
     const message = props.message ? props.message : 'please wait';
-
     return (
         <Modal
             animationType={"slide"}

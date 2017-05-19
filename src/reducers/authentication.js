@@ -1,12 +1,7 @@
 
 
 export default function authentication(authentication = {}, action) {
-
-
-
     switch (action.type) {
-        case 'INIT_AUTH':
-            return Object.assign({}, authentication, { auth0: action.auth })
 
         case 'SIGN_UP_AUTH0_FULFILLED':
             console.log(`sign up SIGN_UP_FULFILLED: `, action.payload);
@@ -16,33 +11,34 @@ export default function authentication(authentication = {}, action) {
             return authentication;
 
         case 'SIGN_IN_AUTH0_USER_REJECTED':
-            debugger
             return authentication;
         case 'SIGN_IN_AUTH0_USER_FULFILLED':
-            return Object.assign({}, authentication, {
-                signedIn: true,
-                type: 'auth0',
-                credentials: action.payload.credentials,
-                userInfo: {
-                    accessToken: action.payload.credentials.access_token,
-                }
-            });
+            debugger;
+            if (action.payload.type !== 'error') {
+                return Object.assign({}, authentication, {
+                    signedIn: true,
+                    type: 'auth0',
+                    credentials: action.payload.credentials,
+                    userInfo: {
+                        accessToken: action.payload.credentials.access_token,
+                    }
+                });
+            }
+            return authentication;
 
-        case 'GET_AUTH0_USER_INFO':
-            return authentication;
-        case 'GET_AUTH0_USER_INFO_PENDING':
-            return authentication;
-        case 'GET_AUTH0_USER_INFO_REJECTED':
-            return authentication;
         case 'GET_AUTH0_USER_INFO_FULFILLED':
-            return Object.assign({}, authentication, {
-                userInfo: Object.assign({}, authentication.userInfo, {
-                    id: action.payload.jsonResponse.user_id,
-                    name: action.payload.jsonResponse.username,
-                    email: action.payload.jsonResponse.email,
-                    profilePicture: action.payload.jsonResponse.picture
-                })
-            });
+            debugger
+            if (action.payload.type !== 'error') {
+                return Object.assign({}, authentication, {
+                    userInfo: Object.assign({}, authentication.userInfo, {
+                        id: action.payload.jsonResponse.user_id,
+                        name: action.payload.jsonResponse.username,
+                        email: action.payload.jsonResponse.email,
+                        profilePicture: action.payload.jsonResponse.picture
+                    })
+                });
+            }
+            return authentication;
 
         case 'SIGN_IN_FACEBOOK_PENDING':
             return authentication;
@@ -134,7 +130,7 @@ export default function authentication(authentication = {}, action) {
                     userInfo: action.payload.item.userInfo
                 })
             }
-            else{
+            else {
                 return Object.assign({}, authentication, {
                     storedAuthenticationChecked: true,
                 })

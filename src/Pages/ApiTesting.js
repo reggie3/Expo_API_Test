@@ -15,14 +15,14 @@ import t from 'tcomb-form-native';
 const Form = t.form.Form;
 
 const SignInInfo = t.struct({
-  userName: t.String,
+  username: t.String,
   password: t.String,
 });
 const formOptions = {
   fields: {
-    userName: {
-      placeholder: 'your user name',
-      label: 'User Name'
+    username: {
+      placeholder: 'your email address name',
+      label: 'Email Address'
     },
     password: {
       label: 'Password',
@@ -36,7 +36,7 @@ class ApiTestingComponent extends Component {
     super(props);
     this.state = {
       formValues: {
-        userName: "test",
+        username: `test@${Math.floor(Math.random()*90000) + 10000}.com`,
         password: "password",
       }
     };
@@ -45,19 +45,14 @@ class ApiTestingComponent extends Component {
   signIn() {
     var signInInfo = this.refs.SignInForm.getValue();
     if (signInInfo) { // if validation fails, value will be null
-      debugger
-      this.props.dispatch(actions.authenticationActions.signInAuth0User(
-        this.props.authentication.auth0,
-        signInInfo));
+      this.props.dispatch(actions.authenticationActions.signInAuth0User(signInInfo));
     }
   }
 
   createAccount() {
     const newSignupInfo = this.refs.SignInForm.getValue();
     if (newSignupInfo) { // if validation fails, value will be null
-      this.props.dispatch(actions.authenticationActions.signUpAuth0User(
-        this.props.authentication.auth0,
-        newSignupInfo))
+      this.props.dispatch(actions.authenticationActions.signUpAuth0User(newSignupInfo))
     }
   }
 
@@ -143,7 +138,8 @@ class ApiTestingComponent extends Component {
           flex: 1,
           justifyContent: 'space-around',
           flexDirection: 'row',
-          alignItems: 'center'
+          alignItems: 'center',
+          paddingBottom: 5
         }}>
           <FaceBookSignInButton
             type='small'
@@ -172,7 +168,7 @@ class ApiTestingComponent extends Component {
           bottom: 0,
           alignSelf: 'stretch',
         }}>
-          <View style={{ paddingTop: 10 }}>
+          <View style={{ paddingTop: 5 }}>
             <Button
               onPress={this.createAccount.bind(this)}
               title="Create Account"

@@ -83,4 +83,6 @@ sagaMiddleware.run(MySagas.sagaHandleAPIRejected);
 sagaMiddleware.run(MySagas.sagaGetFacebookPictureAfterLogin);
 sagaMiddleware.run(MySagas.sagaHandleLoginCompleted);
 sagaMiddleware.run(MySagas.sagaHandleStorageInitialization);
+sagaMiddleware.run(MySagas.sagaHandleSignInAuth0UserAfterSignUp);
+sagaMiddleware.run(MySagas.sagaGetAuth0ProfileAfterUserSignIn);
 

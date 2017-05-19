@@ -50,15 +50,8 @@ class AppComponent extends Component {
         // intialize the storage system
         let initedStorage = storageUtils.initStorage();
         this.props.dispatch(actions.appStateActions.saveStorage(initedStorage));
-
-        // init Auth 0
-        this.initAuthServices();
     }
 
-    initAuthServices() {
-        const auth0 = new Auth0(appSecrets.auth0.domain);
-        this.props.dispatch(actions.authenticationActions.initAuth(auth0));
-    }
 
     componentWillReceiveProps(nextProps) {
         // listen for when the appState changes and authentication storedAuthenticationChecked key

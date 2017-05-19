@@ -126,88 +126,112 @@ export const signInGoogle = () => {
 }
 
 /********************* Auth 0 Functions **********************************/
-export const signUpAuth0User = (auth0, newSignupInfo) => {
-    // console.log({ newSignupInfo });
-    return new Promise(function (resolve, reject) {
-        debugger
-        auth0
-            .authentication(appSecrets.auth0.clientID)
-            .createUser(
-            newSignupInfo.emailAddress,
-            newSignupInfo.userName,
-            newSignupInfo.password,
-            appSecrets.auth0.connection
-            )
-            .then((user) => {
-                debugger;
-                console.log(user)
-                resolve({
-                    type: 'success',
-                    auth0,
-                    newSignupInfo
-                })
-            })
-            .catch((error) => {
-                console.log("signUp error: ", error);
-                reject(error);
-            })
-    });
+export const signUpAuth0User = (newSignupInfo) => {
+    return fetch(`https://${appSecrets.auth0.domain}/dbconnections/signup`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            client_id: appSecrets.auth0.clientID,
+            email: newSignupInfo.username,
+            password: newSignupInfo.password,
+            connection: appSecrets.auth0.connection,
+            user_metadata: { plan: 'normal' }
+        })
+    })
+        .then((credentials) => {
+            return credentials.json();
+        })
+        .then((json) => {
+            if (json.hasOwnProperty("error")) {
+                return ({
+                    type: 'error',
+                    error: json.error,
+                    errorDescription: json.error_description
+                });
+            }
+            return ({
+                type: 'success',
+                newSignupInfo,
+            });
+        })
+        .catch((error) => {
+            return ({
+                type: 'error',
+                error
+            });
+        });
 }
 
-export const signInAuth0User = (auth0, signInInfo) => {
-    return new Promise(function (resolve, reject) {
-        debugger
-        auth0
-            .authentication(appSecrets.auth0.clientID)
-            .login(
-            signInInfo.userName,
-            signInInfo.password,
-            appSecrets.auth0.connection
-            )
-            .then((credentials) => {
-                resolve({
-                    type: 'success',
-                    credentials
-                });
+export const signInAuth0User = (signInInfo) => {
+    return fetch(`https://${appSecrets.auth0.domain}/oauth/ro`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                client_id: appSecrets.auth0.clientID,
+                username: signInInfo.username,
+                password: signInInfo.password,
+                connection: appSecrets.auth0.connection,
+                scope: "openid",
             })
-            .catch((error) => {
-                console.log("signInAuth0User error: ", error);
-                reject(error);
+        })
+        .then((credentials) => {
+            return credentials.json();
+        })
+        .then((json) => {
+            if (json.hasOwnProperty("error")) {
+                return ({
+                    type: 'error',
+                    error: json.error,
+                    errorDescription: json.error_description
+                });
+            }
+            return ({
+                type: 'success',
+                credentials: json
             });
-    });
+        })
+        .catch((error) => {
+            return ({
+                type: 'error',
+                error
+            });
+        });
 }
 
 export const getAuth0Profile = (accessToken) => {
-    return new Promise(function (resolve, reject) {
-        auth0
-            .authentication(appSecrets.auth0.clientID)
-            .tokenInfo(accessToken)
-            .then((response) => {
-                return response.json();
-            })
-            .then((jsonResponse) => {
-                resolve(resolve({
-                    type: 'success',
-                    jsonResponse
-                }));
-            })
-            .catch(error => console.log(error));
-    });
-}
-
-export const getUserInfo = (auth0, idToken) => {
-    return new Promise(function (resolve, reject) {
-        auth0
-            .authentication(appSecrets.auth0.clientID)
-            .tokenInfo(idToken)
-            .then((profile) => {
-                resolve({ profile });
-            })
-            .catch((error) => {
-                console.log("getUserInfo error: ", error);
-                reject(error);
+    debugger;
+    return fetch(`https://${appSecrets.auth0.domain}/userinfo`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        .then((response) => {
+            debugger
+            if (response.status !== 200) {
+                return ({
+                    type: 'error',
+                    error: 'error geting Auth0 profile'
+                });
+            }
+            return response.json();
+        })
+        .then((jsonResponse) => {
+            debugger
+            if(jsonResponse.hasOwnProperty('type')){
+                return jsonResponse;
+            }
+            return ({
+                type: 'success',
+                jsonResponse
             });
-    });
+        })
 }
 
 export const refreshToken = (auth0, refreshToken) => {
