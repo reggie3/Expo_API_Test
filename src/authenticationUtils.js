@@ -156,6 +156,7 @@ export const signUpAuth0User = (auth0, newSignupInfo) => {
 
 export const signInAuth0User = (auth0, signInInfo) => {
     return new Promise(function (resolve, reject) {
+        debugger
         auth0
             .authentication(appSecrets.auth0.clientID)
             .login(
