@@ -63,10 +63,10 @@ export const getAuth0Profile = (accessToken) => {
                 return response.json();
             })
             .then((jsonResponse) => {
-                resolve(resolve({
+                resolve({
                     type: 'success',
                     jsonResponse
-                }));
+                });
             })
     });
 }
@@ -90,10 +90,10 @@ export const resetAuth0Password = (accessToken) => {
                 return response.json();
             })
             .then((jsonResponse) => {
-                resolve(resolve({
+                resolve({
                     type: 'success',
                     jsonResponse
-                }));
+                });
             })
     });
 }
@@ -165,10 +165,10 @@ export const signInFacebook = () => {
                         type: 'error',
                     });
                 }
-                resolve(resolve({
+                resolve({
                     type: 'success',
                     credentials: Object.assign({}, facebookJSONResponse, { accessToken })
-                }));
+                });
             })
             .catch(function (error) {
                 console.log('Request failed', error);
@@ -191,10 +191,10 @@ export const getFacebookProfilePicture = (accessToken, facebookUserID) => {
                         type: 'error',
                     });
                 }
-                resolve(resolve({
+                resolve({
                     type: 'success',
                     pictureData: json
-                }));
+                });
             })
             .catch(function (error) {
                 console.log('Request failed', error);
@@ -217,7 +217,7 @@ export const signInGoogle = () => {
             .then((response) => {
                 switch (response.type) {
                     case 'success':
-                        resolve(resolve({
+                        resolve({
                             type: 'success',
                             credentials: Object.assign({}, response.user, {
                                 accessToken: response.accessToken,
@@ -225,7 +225,7 @@ export const signInGoogle = () => {
                                 serverAuthCode: response.serverAuthCode,
                                 refreshToken: response.refreshToken
                             })
-                        }));
+                        });
                     case 'cancel':
                         resolve({
                             type: 'error',
