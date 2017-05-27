@@ -84,7 +84,6 @@ export const getFacebookProfilePicture = (accessToken, facebookUserID) => {
 
 export const signInGoogle = () => {
     return new Promise(function (resolve, reject) {
-        let responseTokens = {};
         Expo.Google.logInAsync({
             androidClientId: appSecrets.google.oauth.android,
             iosClientId: appSecrets.google.oauth.ios,
