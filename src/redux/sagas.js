@@ -63,7 +63,6 @@ export function* sagaShowPendingDialog() {
  */
 function* handleAPISuccess(action) {
   try {
-    debugger
     let message = "";
     switch (action.type) {
       case 'POST_FULFILLED':
@@ -169,7 +168,6 @@ export function* sagaHandleLoginCompleted() {
  * 
  */
 function* handleAPIRejected(action) {
-  debugger;
   try {
     // console.log("showRejectedDialog");
     let message = "";
