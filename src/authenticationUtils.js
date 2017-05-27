@@ -93,7 +93,7 @@ export const signInGoogle = () => {
             .then((response) => {
                 switch (response.type) {
                     case 'success':
-                        resolve(resolve({
+                        resolve({
                             type: 'success',
                             credentials: Object.assign({}, response.user, {
                                 accessToken: response.accessToken,
