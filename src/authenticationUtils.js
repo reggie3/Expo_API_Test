@@ -101,7 +101,7 @@ export const signInGoogle = () => {
                                 serverAuthCode: response.serverAuthCode,
                                 refreshToken: response.refreshToken
                             })
-                        }));
+                        });
                     case 'cancel':
                         resolve({
                             type: 'error',
