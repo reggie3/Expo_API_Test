@@ -63,28 +63,52 @@ export function* sagaShowPendingDialog() {
  */
 function* handleAPISuccess(action) {
   try {
+    debugger
     let message = "";
     switch (action.type) {
       case 'POST_FULFILLED':
         message = "successful post";
+        if (action.payload.type === 'error') {
+          message = `${action.payload.response}`;
+        }
         break;
       case 'GET_FULFILLED':
         message = "successful get";
+        if (action.payload.type === 'error') {
+          message = `${action.payload.response}`;
+        }
         break;
       case 'DELETE_FULFILLED':
         message = "successful delete";
+        if (action.payload.type === 'error') {
+          message = `${action.payload.response}`;
+        }
         break;
       case 'PUT_FULFILLED':
         message = "successful put";
+        if (action.payload.type === 'error') {
+          message = `${action.payload.response}`;
+        }
         break;
       case 'SIGN_IN_GOOGLE_FULFILLED':
         message = `${action.payload.type} sign in with Google`;
+        if (action.payload.type === 'error') {
+          message = `${action.payload.response}`;
+        }
         break;
       case 'SIGN_IN_FACEBOOK_FULFILLED':
         message = `${action.payload.type} sign in with Facebook`;
+        if (action.payload.type === 'error') {
+          message = `${action.payload.response}`;
+        }
         break;
       case 'SIGN_IN_AUTH0_USER_FULFILLED':
-        message = `${action.payload.type} sign in with Auth0`;
+        if (action.payload.type === 'error') {
+          message = `${action.payload.errorDescription}`;
+        }
+        else {
+          message = 'Successful login with Auth0';
+        }
         break;
 
     }
@@ -145,6 +169,7 @@ export function* sagaHandleLoginCompleted() {
  * 
  */
 function* handleAPIRejected(action) {
+  debugger;
   try {
     // console.log("showRejectedDialog");
     let message = "";
@@ -165,7 +190,7 @@ function* handleAPIRejected(action) {
         message = "failed to sign in with Google";
         break;
       case 'SIGN_IN_FACEBOOK_REJECTED':
-        message = "failed to sign in with Facebook";
+        message = action.payload.msg;
         break;
       case 'SIGN_IN_AUTH0_USER_REJECTED':
         message = "failed to sign in with Auth0";

@@ -11,6 +11,7 @@ import FaceBookSignInButton from '../Components/FacebookSignInButton';
 import GoogleSignInButton from '../Components/GoogleSignInButton';
 import Hr from 'react-native-hr';
 import t from 'tcomb-form-native';
+import * as storageUtils from '../storageUtils';
 
 const Form = t.form.Form;
 
@@ -36,7 +37,7 @@ class ApiTestingComponent extends Component {
     super(props);
     this.state = {
       formValues: {
-        username: `test@${Math.floor(Math.random()*90000) + 10000}.com`,
+        username: `test@${Math.floor(Math.random() * 90000) + 10000}.com`,
         password: "password",
       }
     };
@@ -126,7 +127,26 @@ class ApiTestingComponent extends Component {
     }
   }
 
+  signOut() {
+    storageUtils.removeFromStorage(this.props.appState.storage, 'authentication');
+    this.props.dispatch(actions.authenticationActions.signOutUser());
+  }
+
   render() {
+    let signInRenderable = (
+      <Button
+        onPress={this.signIn.bind(this)}
+        title="Sign In"
+        accessibilityLabel="SignIn"
+      />)
+    if (this.props.authentication.signedIn) {
+      signInRenderable = (
+        <Button
+          onPress={this.signOut.bind(this)}
+          title="Sign Out"
+          accessibilityLabel="Sign Out"
+        />)
+    }
     return (
       <View style={{
         flex: 1,
@@ -148,7 +168,7 @@ class ApiTestingComponent extends Component {
             type='small'
             onPress={this.signInSocial.bind(this, 'google')} />
         </View>
-        <Hr lineColor='#b3b3b3'/>
+        <Hr lineColor='#b3b3b3' />
         <View style={{
           marginVertical: 10
         }}>
@@ -176,12 +196,8 @@ class ApiTestingComponent extends Component {
             />
           </View>
           <View style={{ paddingTop: 10 }}>
-            <Button
-              onPress={this.signIn.bind(this)}
-              title="Sign In"
-              color='limegreen'
-              accessibilityLabel="Sign In to your account"
-            />
+            {signInRenderable}
+
           </View>
           <View style={{ paddingTop: 10 }}>
             <Button
@@ -191,7 +207,7 @@ class ApiTestingComponent extends Component {
             />
           </View>
         </View>
-        <Hr lineColor='#b3b3b3'/>
+        <Hr lineColor='#b3b3b3' />
         <View style={{
           flex: 1,
           justifyContent: 'space-around',
@@ -235,6 +251,7 @@ class ApiTestingComponent extends Component {
 
 const mapStateToProps = (state) => {
   return Object.assign({}, {
+    appState: state.appState,
     authentication: state.authentication,
     responseMessage: state.appState.responseMessage
 

@@ -7,38 +7,38 @@ import Hr from 'react-native-hr';
 import * as Animatable from 'react-native-animatable';
 import globals from '../globals/globals';
 import Expo from 'expo';
+import * as storageUtils from '../storageUtils';
 
 class MainMenuComponent extends Component {
 
-constructor(props) {
-    super(props);
-    this.state = {
-      animationType: 'slideInRight'
-    };
-  }
-  
+    constructor(props) {
+        super(props);
+        this.state = {
+        };
+    }
+
     closeMenu() {
         this.props.dispatch(actions.modalsActions.showMainMenu(false));
     }
 
     signIn() {
         this.closeMenu();
-        this.props.dispatch(actions.appStateActions.navigateTo("SignInSignUp"));
+        this.props.dispatch(actions.authenticationActions.signOutUser());
+        storageUtils.removeFromStorage(this.props.appState.storage, 'authentication');
     }
 
     signOut() {
         this.closeMenu();
+        storageUtils.removeFromStorage(this.props.appState.storage, 'authentication');
         this.props.dispatch(actions.authenticationActions.signOutUser());
     }
 
     componentDidMount() {
         this.animatable.bounceIn(500)
-        //debugger
     }
 
     componentWillUnmount() {
         this.animatable.fadeOut(500)
-        //debugger
     }
 
     render() {
@@ -58,11 +58,11 @@ constructor(props) {
                 />)
         }
         return (
-           <Animatable.View 
+            <Animatable.View
                 style={styles.animatiableFill}
-                ref={(component)=>this.animatable = component}
-                 onPress={this.closeMenu.bind(this)}>
-               
+                ref={(component) => this.animatable = component}
+                onPress={this.closeMenu.bind(this)}>
+
                 <TouchableHighlight
                     style={styles.touchableBackground}
                     onPress={this.closeMenu.bind(this)}>
@@ -81,7 +81,7 @@ constructor(props) {
                                     color='limegreen'
                                 />
                             </View>
-                           
+
                         </View>
                         <Hr lineColor='#b3b3b3' />
                     </View>
@@ -95,7 +95,8 @@ constructor(props) {
 const mapStateToProps = (state) => {
     return Object.assign({}, {
         showMainMenu: state.modals.showMainMenu,
-        authentication: state.authentication
+        authentication: state.authentication,
+        appState: state.appState
     });
 }
 const mapDispatchToProps = (dispatch) => {
@@ -109,8 +110,8 @@ export default MainMenu = connect(mapStateToProps, mapDispatchToProps)(MainMenuA
 // export default Animatable.createAnimatableComponent(MainMenu);
 
 const styles = StyleSheet.create(Object.assign({}, globalStyles, {
-    animatiableFill:{
-                top: Expo.Constants.statusBarHeight + globals.appBar.height.standard,
+    animatiableFill: {
+        top: Expo.Constants.statusBarHeight + globals.appBar.height.standard,
 
         ...StyleSheet.absoluteFillObject,
 
@@ -123,15 +124,15 @@ const styles = StyleSheet.create(Object.assign({}, globalStyles, {
         top: Expo.Constants.statusBarHeight + globals.appBar.height.standard,
         //top: globals.appBar.height.standard,
         bottom: 0
-        
+
     },
     centering: {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 8,
     },
-    menuItemContainer:{
-        
+    menuItemContainer: {
+
     }
 }
 ));

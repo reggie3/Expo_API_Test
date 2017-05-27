@@ -53,7 +53,7 @@ let authenticationActions = {
             type: 'SIGN_OUT_USER'
         }
     },
-    resetPassword: function (auth0, emailAddress) {
+    changePassword: function (auth0, emailAddress) {
         return {
             type: 'RESET_PASSWORD',
             payload: authenticationUtils.signInSocial(auth0, emailAddress)

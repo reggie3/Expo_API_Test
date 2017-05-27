@@ -13,21 +13,19 @@ export default function authentication(authentication = {}, action) {
         case 'SIGN_IN_AUTH0_USER_REJECTED':
             return authentication;
         case 'SIGN_IN_AUTH0_USER_FULFILLED':
-            debugger;
             if (action.payload.type !== 'error') {
                 return Object.assign({}, authentication, {
                     signedIn: true,
                     type: 'auth0',
                     credentials: action.payload.credentials,
                     userInfo: {
-                        accessToken: action.payload.credentials.access_token,
+                        accessToken: action.payload.credentials.id_token,   // we'll be using the id_token to validate access
                     }
                 });
             }
             return authentication;
 
         case 'GET_AUTH0_USER_INFO_FULFILLED':
-            debugger
             if (action.payload.type !== 'error') {
                 return Object.assign({}, authentication, {
                     userInfo: Object.assign({}, authentication.userInfo, {

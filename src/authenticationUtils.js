@@ -1,5 +1,4 @@
 import appSecrets from './appSecrets';
-import Auth0 from 'react-native-auth0';
 import Expo from 'expo';
 
 export const signInFacebook = () => {
@@ -126,6 +125,7 @@ export const signInGoogle = () => {
 }
 
 /********************* Auth 0 Functions **********************************/
+// https://auth0.com/docs/api/authentication#signup
 export const signUpAuth0User = (newSignupInfo) => {
     return fetch(`https://${appSecrets.auth0.domain}/dbconnections/signup`, {
         method: 'POST',
@@ -164,6 +164,7 @@ export const signUpAuth0User = (newSignupInfo) => {
         });
 }
 
+// https://auth0.com/docs/api/authentication#database-ad-ldap-active-
 export const signInAuth0User = (signInInfo) => {
     return fetch(`https://${appSecrets.auth0.domain}/oauth/ro`,
         {
@@ -203,8 +204,8 @@ export const signInAuth0User = (signInInfo) => {
         });
 }
 
+// https://auth0.com/docs/api/authentication#user-profile
 export const getAuth0Profile = (accessToken) => {
-    debugger;
     return fetch(`https://${appSecrets.auth0.domain}/userinfo`,
         {
             method: 'GET',
@@ -213,7 +214,6 @@ export const getAuth0Profile = (accessToken) => {
             }
         })
         .then((response) => {
-            debugger
             if (response.status !== 200) {
                 return ({
                     type: 'error',
@@ -223,7 +223,43 @@ export const getAuth0Profile = (accessToken) => {
             return response.json();
         })
         .then((jsonResponse) => {
-            debugger
+            
+            if(jsonResponse.hasOwnProperty('type')){
+                return jsonResponse;
+            }
+            return ({
+                type: 'success',
+                jsonResponse
+            });
+        })
+}
+
+
+// https://auth0.com/docs/api/authentication#change-password
+export const changePassword = (auth0, emailAddress) => {
+    return fetch(`https://${appSecrets.auth0.domain}/dbconnections/change_password`,
+        {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+             body: JSON.stringify({
+                client_id: appSecrets.auth0.clientID,
+                email: signInInfo.username,
+                password: "",
+                connection: appSecrets.auth0.connection
+            })
+        })
+        .then((response) => {
+            if (response.status !== 200) {
+                return ({
+                    type: 'error',
+                    error: 'error geting Auth0 profile'
+                });
+            }
+            return response.json();
+        })
+        .then((jsonResponse) => {
             if(jsonResponse.hasOwnProperty('type')){
                 return jsonResponse;
             }
@@ -248,20 +284,4 @@ export const refreshToken = (auth0, refreshToken) => {
             });
     });
 }
-
-export const resetPassword = (auth0, emailAddress) => {
-    return new Promise(function (resolve, reject) {
-        auth0
-            .authentication(appSecrets.auth0.clientID)
-            .resetPassword(emailAddress)
-            .then((response) => {
-                resolve({ response });
-            })
-            .catch((error) => {
-                console.log("resetPassword error: ", error);
-                reject(error);
-            });
-    });
-}
-
 
