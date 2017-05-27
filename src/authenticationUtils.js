@@ -41,10 +41,10 @@ export const signInFacebook = () => {
                         type: 'error',
                     });
                 }
-                resolve(resolve({
+                resolve({
                     type: 'success',
                     credentials: Object.assign({}, facebookJSONResponse, { accessToken })
-                }));
+                });
             })
             .catch(function (error) {
                 resolve({
@@ -67,10 +67,10 @@ export const getFacebookProfilePicture = (accessToken, facebookUserID) => {
                         type: 'error',
                     });
                 }
-                resolve(resolve({
+                resolve({
                     type: 'success',
                     pictureData: json
-                }));
+                });
             })
             .catch(function (error) {
                 console.log('Request failed', error);
