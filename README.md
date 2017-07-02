@@ -1,6 +1,6 @@
 ﻿# Expo API Test
 
-## This project uses with the [Expo API Test Lambdas](https://github.com/reggie3/Expo_API_Test_Lambdas) repo
+## This project is used in conjunction with the [Expo API Test Lambdas](https://github.com/reggie3/Expo_API_Test_Lambdas) repo that contains the code for the AWS Lambda functions that work with this project.
 
 This repo contains four branches the correspond to the branches of the [Expo API Test repo](https://github.com/reggie3/Expo_API_Test)
 
@@ -8,6 +8,15 @@ This repo contains four branches the correspond to the branches of the [Expo API
 * step2_add_authorizer_functionality - Add Facebook and Google logins to enableable authorization to used HTTP requests
 * step3_cache_authentication_info - Save the authentication data to the local device so that the user does not have to keep logging in
 * step4_add_user-pass_auth - Add Auth0 user name / password login functionality
+
+This project was created to accompany my series of blog posts on using Amazon Web Services' Lambda and API Gateway, along with Auth0 to create the serverless authentication and authorization for a React Native application incorporating Redux and built using Expo.io.
+
+1. [Implementing an Authentication Flow Part 1: Initial Design](https://medium.com/@reginald.johnson/implementing-an-authentication-flow-part-1-initial-design-1c12d1febd7c)
+2. [Creating the UI & AWS API Gateway and Lambda Integration](https://medium.com/@reginald.johnson/creating-the-ui-aws-api-gateway-and-lambda-integration-f261f710161e)
+3. [Social Login in React Native + Expo.io and AWS API Gateway + Lambda Authentication](https://medium.com/@reginald.johnson/social-login-in-react-native-expo-io-and-aws-api-gateway-lambda-authentication-53cac566594b)
+4. [Caching Google and Facebook Login Authentication Data Locally in a React-Native & Redux Application](https://medium.com/@reginald.johnson/caching-authentication-data-locally-in-a-react-native-redux-application-b89e5318f4bf)
+5. [User Name and Password Login Using Auth0 in an Expo.io + React Native Application](https://medium.com/@reginald.johnson/user-name-and-password-login-using-auth0-in-an-expo-io-react-native-application-a9472abaca41)
+
 
 
 ## The project was created with create-react-native app and use Expo.io.  Futher instructions on howto run the application are below
